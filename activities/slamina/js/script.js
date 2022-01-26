@@ -236,6 +236,8 @@ let currentAnimal = 'no';
 let currentAnswer = '';
 let gamestate = 'menu' //menu, game, game over
 let game = 'none'
+let praised = 0;
+let score = 0;
 /**
 Description of preload
 */
@@ -289,6 +291,7 @@ function draw() {
 
     if (currentAnswer === currentAnimal) {
       fill(0, 255, 0);
+      praising();
 
     } else {
       fill(255, 0, 0);
@@ -322,6 +325,7 @@ function mousePressed() {
     currentAnimal = random(animals);
     let reverseAnimal = reverseString(currentAnimal);
     responsiveVoice.speak(reverseAnimal);
+    praised = 0;
 
   }
   if (gamestate === 'game' && game === 'fruits') {
@@ -337,6 +341,13 @@ function mousePressed() {
 
 }
 
+function praising() {
+  if (praised === 0) {
+    responsiveVoice.speak(`${random(praise)}`);
+    praised = 1;
+    score++
+  }
+}
 
 /**
 Reverses the provided string
