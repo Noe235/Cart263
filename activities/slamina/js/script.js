@@ -234,10 +234,11 @@ const praise = [
 ];
 let currentAnimal = 'no';
 let currentAnswer = '';
-let gamestate = 'menu' //menu, game, game over
+let gamestate = 'menu' //menu, game,over
 let game = 'none'
 let praised = 0;
 let score = 0;
+let stage = 0; //max 10
 /**
 Description of preload
 */
@@ -281,26 +282,38 @@ function draw() {
     textStyle(BOLD);
     textAlign(CENTER, CENTER);
 
-  } else if (gamestate === 'game') {
-    fill(255, 255, 255);
+  }
 
-    text('Click to play the sound', width / 2, 200);
+  if (stage >= 11) {
+    fill(255, 255, 255);
+    text('Click to return to menu', width / 2, height / 2);
+    text(`Score ${score}/10`, width / 2, height / 2 + 200);
     textSize(32);
     textStyle(BOLD);
     textAlign(CENTER, CENTER);
-
-    if (currentAnswer === currentAnimal) {
-      fill(0, 255, 0);
-      praising();
-
-    } else {
-      fill(255, 0, 0);
-    }
-    text(currentAnswer, width / 2, height / 2);
-
-  } else if (gamestate === 'over') {
-    text('Click to try again', width / 2, height / 2);
   }
+
+  if (stage <= 10) {
+    if (gamestate === 'game') {
+      fill(255, 255, 255);
+      text(`Score ${score}`, width - 200, 100);
+      text('Click to play the sound', width / 2, 200);
+      textSize(32);
+      textStyle(BOLD);
+      textAlign(CENTER, CENTER);
+
+      if (currentAnswer === currentAnimal) {
+        fill(0, 255, 0);
+        praising();
+
+      } else {
+        fill(255, 0, 0);
+      }
+      text(currentAnswer, width / 2, height / 2);
+
+    }
+  }
+
 }
 
 function guessAnimal(animal) {
@@ -309,36 +322,44 @@ function guessAnimal(animal) {
 }
 
 function mousePressed() {
-
+  console.log(stage);
   if (gamestate === 'menu') {
     if (mouseX > width / 2) {
       gamestate = 'game';
       game = 'animals';
+
     }
     if (mouseX < width / 2) {
       gamestate = 'game';
       game = 'fruits';
     }
   }
+  if (stage >= 11) {
+    gamestate = 'over';
+  }
+  if (stage < 11) {
+    if (gamestate === 'game' && game === 'animals') {
+      currentAnimal = random(animals);
+      let reverseAnimal = reverseString(currentAnimal);
+      responsiveVoice.speak(reverseAnimal);
+      praised = 0;
+      stage++;
+    }
+    if (gamestate === 'game' && game === 'fruits') {
+      currentAnimal = random(fruits);
+      let reverseFruit = reverseString(currentAnimal);
+      responsiveVoice.speak(reverseFruit);
+      praised = 0;
+      stage++;
+    }
+  }
 
-  if (gamestate === 'game' && game === 'animals') {
-    currentAnimal = random(animals);
-    let reverseAnimal = reverseString(currentAnimal);
-    responsiveVoice.speak(reverseAnimal);
-    praised = 0;
+  if (gamestate === 'over') {
+    gamestate = 'menu';
+    score = 0;
+    stage = 0;
 
   }
-  if (gamestate === 'game' && game === 'fruits') {
-    currentAnimal = random(fruits);
-    let reverseFruit = reverseString(currentAnimal);
-    responsiveVoice.speak(reverseFruit);
-
-  }
-  if (gamestate === 'over')
-    gamestate = 'game';
-
-
-
 }
 
 function praising() {
