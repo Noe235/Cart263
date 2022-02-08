@@ -56,10 +56,10 @@ handpose.on('predict',function(results){
 
 for (let i = 0; i <nbbubble ; i++){
   let x =random(width);
-  let y = height;
+  let y = random(height);
   let size =100;
   let vx =0;
-  let vy=-2;
+  let vy=random(-2,-1);
   let color ={
     r:random(0,255),
     g:random(0,255),
@@ -96,34 +96,39 @@ let baseY = base[1];
 // }
 
 //modified version check every bubble
-// for (let i = 0; i <bubbles.lenght; i++){
-//let bubble = bubbles[i];
-// let d = dist(tipX,tipY,bubble.x,bubble.y);
-// if (d< bubble.size/2){
-// bubbles.splice();
-//}
-//
-//
+for (let i = 0; i <bubbles.length; i++){
+let bubble = bubbles[i];
+let d = dist(tipX,tipY,bubble.x,bubble.y);
+if (d< bubble.size/2){
+bubbles.splice(i,1);
+}
 }
 
-//making so that there is always 5 bubble on screen
+}
+if (bubbles.length <nbbubble){
+
+  let x =random(width);
+  let y = random(0,height);
+  let size =100;
+  let vx =0;
+  let vy=-2;
+  let color ={
+    r:random(0,255),
+    g:random(0,255),
+    b:random(0,255),
+  }
+let bulle = new Bubble (x,y,size,vx,vy,color);
+bubbles.push(bulle);
+}
 
 
-
-// //moving the buble
+//moving the buble
 for (let i = 0; i <bubbles.length; i++){
   let bubble = bubbles[i];
 bubble.movement();
 bubble.display();
 bubble.loop();
 }
-//will in theory be deleted since new bubble will be made
-// if (bubble.y<0) {
-//   bubble.x = random(width);
-//   bubble.y = height;
-// }
-
-
 
 }
 
