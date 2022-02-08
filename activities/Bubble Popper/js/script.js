@@ -6,16 +6,11 @@ Pop bubble with your hand
 */
 
 "use strict";
-//Things to add
-//score => easy
-//sfx => easy
-//menu screen + loading screen =>medium-easy ish depends maybe with oop again
-
 
 //gamestate
 let gamestate = 'loading'
 let score = 0;
-let timer = 1200;
+let timer = 3600;
 //user webcam
 let video = undefined;
 
@@ -102,6 +97,19 @@ if (gamestate==='menu'){
   pop();
 }
 
+if (gamestate === 'gameover'){
+  push();
+  fill(255,255,255);
+  textSize(25);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text(`Score ${score}`, width / 2, height / 2);
+  textSize(20);
+  text(`click to play again`, width / 2, height / 2 +100);
+  pop();
+}
+
+
 if(gamestate=== 'game') {
 if (predictions.length > 0){
 let hand = predictions [0];
@@ -167,16 +175,16 @@ function time(){
 function overlay(){
   push();
   fill(255,255,255);
-  textSize(12);
+  textSize(17);
   textAlign(LEFT);
-  text(`Score ${score}`, 100, 100);
+  text(`Score ${score}`, 50, 50);
   pop();
 
   push();
   fill(255,255,255);
   textSize(12);
   textAlign(LEFT);
-  text(`Time ${timer}`, width-100, 100);
+  text(`Time ${round(timer/60)}`, width-100, 50);
   pop();
 }
 function displayPin(baseX, baseY, tipX, tipY){
@@ -200,11 +208,11 @@ function displayPin(baseX, baseY, tipX, tipY){
 function mousePressed(){
   if(gamestate === 'menu')
 {
-  gamestate = 'game'
+  gamestate = 'game';
 }
 if(gamestate === 'gameover'){
-  gamestate= 'game'
-  score = 0
-  timer = 60
+  gamestate= 'game';
+  score = 0;
+  timer = 3600;
 }
 }
