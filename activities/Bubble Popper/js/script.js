@@ -21,7 +21,7 @@ let handpose =undefined;
 let predictions=[];
 
 //Bubble
-let bubble= undefined; // => s[];
+let bubble= [];
 let nbbubble = 5
 
 
@@ -43,7 +43,7 @@ createCanvas(640,480);
 video = createCapture(VIDEO);
 video.hide();
 handpose = ml5.handpose(video,{
-  fliphorizontal:true
+  flipHorizontal:true
 },
 function(){
   console.log('model works');
@@ -54,17 +54,9 @@ handpose.on('predict',function(results){
   predictions = results;
 });
 
-//can remove +oop
-bubble ={
-  x:random(width),
-  y:height,
-  size:100,
-  vx:0,
-  vy:-2,
-};
+//making one bubble
+bubble =new Bubble;
 
-//adding when oop ready
-//let bubble = new Bubble();
 
 }
 /**
@@ -109,18 +101,16 @@ if (d< bubble.size/2){
 //   let vx =0;
 //   let vy=-2;
 //   let color ={
-//     r:random(0,255);
-//     g:random(0,255);
-//     b:random(0,255);
+//     r:random(0,255),
+//     g:random(0,255),
+//     b:random(0,255),
 // }
 // let bubble = new bubble (x,y,size,vx,vy,color);
 // bubble.push(bubble);
 
 
-//moving the buble + in oop
-bubble.x += bubble.vx;
-bubble.y += bubble.vy;
-// => bubble.movement()
+// //moving the buble
+bubble.movement()
 
 //will in theory be deleted since new bubble will be made
 if (bubble.y<0) {
@@ -128,13 +118,7 @@ if (bubble.y<0) {
   bubble.y = height;
 }
 
-//add to oop
-push();
-fill(0,0,255);
-noStroke();
-ellipse(bubble.x,bubble.y,bubble.size);
-pop();
-//=> bubble.display()
+ bubble.display()
 
 }
 
