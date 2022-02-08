@@ -21,7 +21,7 @@ let handpose =undefined;
 let predictions=[];
 
 //Bubble
-let bubble= [];
+let bubbles= [];
 let nbbubble = 5
 
 
@@ -54,8 +54,20 @@ handpose.on('predict',function(results){
   predictions = results;
 });
 
-//making one bubble
-bubble =new Bubble;
+for (let i = 0; i <nbbubble ; i++){
+  let x =random(width);
+  let y = height;
+  let size =100;
+  let vx =0;
+  let vy=-2;
+  let color ={
+    r:random(0,255),
+    g:random(0,255),
+    b:random(0,255),
+}
+let bulle = new Bubble (x,y,size,vx,vy,color);
+bubbles.push(bulle);
+}
 
 
 }
@@ -77,11 +89,12 @@ let baseY = base[1];
 
 
 //check bubble poppin
-let d = dist(tipX,tipY,bubble.x,bubble.y);
-if (d< bubble.size/2){
-  bubble.x = random(width);
-  bubble.y = height;
-}
+// let d = dist(tipX,tipY,bubble.x,bubble.y);
+// if (d< bubble.size/2){
+//   bubble.x = random(width);
+//   bubble.y = height;
+// }
+
 //modified version check every bubble
 // for (let i = 0; i <bubbles.lenght; i++){
 //let bubble = bubbles[i];
@@ -94,31 +107,23 @@ if (d< bubble.size/2){
 }
 
 //making so that there is always 5 bubble on screen
-// for (let i = 0; i <nbbubble ; i++){
-//   let x =random(width);
-//   let y = height;
-//   let size =100;
-//   let vx =0;
-//   let vy=-2;
-//   let color ={
-//     r:random(0,255),
-//     g:random(0,255),
-//     b:random(0,255),
-// }
-// let bubble = new bubble (x,y,size,vx,vy,color);
-// bubble.push(bubble);
+
 
 
 // //moving the buble
-bubble.movement()
-
-//will in theory be deleted since new bubble will be made
-if (bubble.y<0) {
-  bubble.x = random(width);
-  bubble.y = height;
+for (let i = 0; i <bubbles.length; i++){
+  let bubble = bubbles[i];
+bubble.movement();
+bubble.display();
+bubble.loop();
 }
+//will in theory be deleted since new bubble will be made
+// if (bubble.y<0) {
+//   bubble.x = random(width);
+//   bubble.y = height;
+// }
 
- bubble.display()
+
 
 }
 

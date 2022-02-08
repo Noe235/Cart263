@@ -1,16 +1,12 @@
 class Bubble{
 //constructor
-constructor(){
-this.x =random(width);
-this.y = height;
-this.size =100;
-this.vx =0;
-this.vy=-2;
-this.color ={
-  r:random(0,255),
-  g:random(0,255),
-  b:random(0,255),
-  };
+constructor(x,y,size,vx,vy,color){
+this.x =x;
+this.y = y;
+this.size =size;
+this.vx =vx;
+this.vy=vy;
+this.color =color;
 }
 
 //display
@@ -29,6 +25,10 @@ movement(){
 this.x += this.vx;
 this.y += this.vy;
 }
-
-
+ loop(){
+   if (this.y<0) {
+     this.x = random(width);
+     this.y = height;
+ }
+}
 }
