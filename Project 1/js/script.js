@@ -31,12 +31,14 @@ let colorchoice = [{
 ];
 
 //store the user information
+const PROFILE_USER_ANIGHTATTHEMOVIE = 'userProfile';
 let userProfile = {
   name: 'undefined',
   age: 'undefined',
   dream: 'undefined',
 
 }
+let bankeddata = false;
 
 
 /**
@@ -63,13 +65,18 @@ function setup() {
   }
 
 
-  //checking if there's user information
-  let data
-  if (data) {
 
-  }
 }
 
+function setupUserProfile(data) {
+  userProfile.name = data.name;
+
+  userProfile.age = data.age;
+
+  userProfile.dream = data.dream;
+
+
+}
 
 /**
 Description of draw()
@@ -77,6 +84,13 @@ Description of draw()
 function draw() {
   createCanvas(800, 800);
   background(0);
+
+  //checking if there's user information
+  let data = JSON.parse(localStorage.getItem(PROFILE_USER_ANIGHTATTHEMOVIE))
+  if (data) {
+    setupUserProfile(data);
+    bankeddata = true;
+  }
 
 
 
@@ -117,10 +131,32 @@ function draw() {
     //button
     text('special mode', width / 2, height / 5 * 4 + 60) //will be hidden
     pop();
+
+    if (bankeddata === true) {
+      push();
+      textSize(22);
+      fill(255, 255, 255);
+      textAlign(CENTER);
+      textStyle(BOLD);
+      text(`Welcome back ${userProfile.name}`, width / 2, height / 4 + 50)
+      pop();
+
+      push()
+      //data detection
+      textSize(13);
+      fill(255, 255, 255);
+      text('Data detected', 10, height - 25);
+      textSize(11);
+      text('Press C to delete it', 10, height - 15);
+      pop();
+    }
   }
 
 
   if (gamestate === 'gamejob') {
+    if (bankeddata === false) {
+      generateUserProfile();
+    }
     for (let i = 0; i < pieces.length; i++) {
       pieces[i].display();
 
@@ -135,7 +171,7 @@ function draw() {
   }
 
   if (gamestate === 'option') {
-    generateUserProfile();
+
   }
 }
 
@@ -164,6 +200,18 @@ function mousePressed() {
     }
   }
 
+  if (gamestate === 'option') {
+
+  }
+}
+
+function keyPressed() {
+  if (keyIsPressed === true) {
+    if (keyCode === 67) {
+      localStorage.removeItem(`userProfile`);
+      bankeddata = false
+    }
+  }
 }
 
 function generateUserProfile() {
@@ -176,4 +224,5 @@ function generateUserProfile() {
 
   // Save the resulting profile to local storage
   localStorage.setItem(PROFILE_USER_ANIGHTATTHEMOVIE, JSON.stringify(userProfile));
+  bankeddata = true;
 }
