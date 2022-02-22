@@ -26,24 +26,25 @@ let sevenSyllablesLines=[
   'They will not come back again',
   ];
 
+let lines = [
+  random(fiveSyllablesLines),
+  random(sevenSyllablesLines),
+  random(fiveSyllablesLines),
+]
 
-let line1= random (fiveSyllablesLines);
-let line2= random (sevenSyllablesLines);
-let line3= random (fiveSyllablesLines);
+let linesP = [
+  lines[0],
+  lines[1],
+  lines[2],
+];
 
 
-let line1P= document.getElementById('line-1');
-let line2P= document.getElementById('line-2');
-let line3P= document.getElementById('line-3');
+for (let i = 0; i<3;i++){
+    linesP[i]= document.getElementById(`line-${i}`);
+  linesP[i].innerText= lines[i];
+   linesP[i].addEventListener('click',lineClicked);
 
-line1P.innerText = line1;
-line2P.innerText = line2;
-line3P.innerText = line3;
-
-line1P.addEventListener('click', lineClicked);
-line2P.addEventListener('click', lineClicked);
-line3P.addEventListener('click', lineClicked);
-
+ }
 
 
 function lineClicked(event){
@@ -74,10 +75,10 @@ if (opacity <1){
 }
 
 function setNewLine(element){
-  if (element=== line1P || element=== line3P){
+  if (element=== linesP[0] || element=== linesP[2]){
     element.innerText= random (fiveSyllablesLines);
 
-  } else if (element===line2P){
+  } else if (element===linseP[1]){
     element.innerText= random (sevenSyllablesLines);
 
   }
