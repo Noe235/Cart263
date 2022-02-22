@@ -50,8 +50,8 @@ for (let i = 0; i<linesP.length;i++){
 button.addEventListener('click',reading);
 
 function reading(){
-  for (let i = 0; i<lines.length; i++){
-    responsiveVoice.speak(lines[i]);
+  for (let i = 0; i<linesP.length; i++){
+    responsiveVoice.speak(linesP[i].innerText);
   }
 }
 
