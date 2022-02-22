@@ -7,7 +7,7 @@ Haiku Generator
 
 // Make a synthesized voice read out the poem each time it changes or on a separate user interaction
 //Change or add to the basic transition of a fade in and out (could you make new lines appear with a typewriter effect?)
-//fix the ines at the top
+//fix the ines at the top ÷
 "use strict";
 
 let fiveSyllablesLines =[
@@ -38,13 +38,22 @@ let linesP = [
   lines[2],
 ];
 
+let button = document.getElementById('btn');
 
-for (let i = 0; i<3;i++){
+for (let i = 0; i<linesP.length;i++){
     linesP[i]= document.getElementById(`line-${i}`);
   linesP[i].innerText= lines[i];
    linesP[i].addEventListener('click',lineClicked);
 
  }
+
+button.addEventListener('click',reading);
+
+function reading(){
+  for (let i = 0; i<lines.length; i++){
+    responsiveVoice.speak(lines[i]);
+  }
+}
 
 
 function lineClicked(event){
@@ -78,8 +87,15 @@ function setNewLine(element){
   if (element=== linesP[0] || element=== linesP[2]){
     element.innerText= random (fiveSyllablesLines);
 
-  } else if (element===linseP[1]){
+    if (element=== linesP[0]){
+    lines.splice(0,1)}
+
+    if (element=== linesP[0]){
+    lines.splice(2,1)}
+
+  } else if (element===linesP[1]){
     element.innerText= random (sevenSyllablesLines);
+    lines.splice(1,1)
 
   }
 
