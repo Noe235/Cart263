@@ -10,21 +10,21 @@ Haiku Generator
 //fix the ines at the top ÷
 "use strict";
 
-let fiveSyllablesLines =[
+let fiveSyllablesLines = [
   'O, to be a tree',
   'The cat does not know',
   'We are all forests',
   'You have done your best',
   'They are all gone now',
-  ];
+];
 
-let sevenSyllablesLines=[
+let sevenSyllablesLines = [
   'Say the things left unsaid',
   "Never believe the wind's lies",
   'The autumn stretches its legs',
   'Nothing can satisfy you',
   'They will not come back again',
-  ];
+];
 
 let lines = [
   random(fiveSyllablesLines),
@@ -39,63 +39,77 @@ let linesP = [
 ];
 
 let button = document.getElementById('btn');
+let newer = document.getElementById('new');
 
-for (let i = 0; i<linesP.length;i++){
-    linesP[i]= document.getElementById(`line-${i}`);
-  linesP[i].innerText= lines[i];
-   linesP[i].addEventListener('click',lineClicked);
+for (let i = 0; i < linesP.length; i++) {
+  linesP[i] = document.getElementById(`line-${i}`);
+  linesP[i].innerText = lines[i];
+  linesP[i].addEventListener('click', lineClicked);
 
- }
+}
 
-button.addEventListener('click',reading);
+button.addEventListener('click', reading);
+newer.addEventListener('click', generateNew);
 
-function reading(){
-  for (let i = 0; i<linesP.length; i++){
+function generateNew() {
+  linesP[0].innerText = random(fiveSyllablesLines);
+
+  linesP[2].innerText = random(fiveSyllablesLines);
+
+  linesP[1].innerText = random(sevenSyllablesLines);
+
+}
+
+function reading() {
+  for (let i = 0; i < linesP.length; i++) {
     responsiveVoice.speak(linesP[i].innerText);
   }
 }
 
 
-function lineClicked(event){
+function lineClicked(event) {
   fadeOut(event.target, 1);
 
 }
 
-function fadeOut(element, opacity){
-  opacity-= 0.01;
-  element.style ['opacity'] = opacity;
-   if(opacity>0) {
-     requestAnimationFrame(function(){
-       fadeOut(element,opacity);
-     }) } else {
-   setNewLine(element);
-   fadeIn(element,opacity);
-     }
-   }
-
-function fadeIn(element,opacity){
-  opacity+= 0.01;
-element.style['opacity']= opacity;
-if (opacity <1){
-  requestAnimationFrame(function (){
-  fadeIn(element,opacity);
-});
-}
+function fadeOut(element, opacity) {
+  opacity -= 0.01;
+  element.style['opacity'] = opacity;
+  if (opacity > 0) {
+    requestAnimationFrame(function () {
+      fadeOut(element, opacity);
+    })
+  } else {
+    setNewLine(element);
+    fadeIn(element, opacity);
+  }
 }
 
-function setNewLine(element){
-  if (element=== linesP[0] || element=== linesP[2]){
-    element.innerText= random (fiveSyllablesLines);
+function fadeIn(element, opacity) {
+  opacity += 0.01;
+  element.style['opacity'] = opacity;
+  if (opacity < 1) {
+    requestAnimationFrame(function () {
+      fadeIn(element, opacity);
+    });
+  }
+}
 
-    if (element=== linesP[0]){
-    lines.splice(0,1)}
+function setNewLine(element) {
+  if (element === linesP[0] || element === linesP[2]) {
+    element.innerText = random(fiveSyllablesLines);
 
-    if (element=== linesP[0]){
-    lines.splice(2,1)}
+    if (element === linesP[0]) {
+      lines.splice(0, 1)
+    }
 
-  } else if (element===linesP[1]){
-    element.innerText= random (sevenSyllablesLines);
-    lines.splice(1,1)
+    if (element === linesP[0]) {
+      lines.splice(2, 1)
+    }
+
+  } else if (element === linesP[1]) {
+    element.innerText = random(sevenSyllablesLines);
+    lines.splice(1, 1)
 
   }
 
@@ -103,7 +117,7 @@ function setNewLine(element){
 
 
 
-function random(array){
-  let index = Math.floor(Math.random()*array.length);
+function random(array) {
+  let index = Math.floor(Math.random() * array.length);
   return array[index];
 }
