@@ -25,12 +25,42 @@ let sevenSyllablesLines = [
   'Nothing can satisfy you',
   'They will not come back again',
 ];
+let bgs = [
+  '#fb5458',
+  '#6292e9',
+  '#61bf99',
+  '#fe9952',
+  '#cbc6cc',
+  '#95caee',
+  '#fdd162',
+  '#8c67aa',
+  '#e08696',
+  '#c699ee',
+  '#e5b2d1',
+  '#80c694',
+  '#aed482',
+  '#e07284',
+  '#eae681',
+  '#7fcdeb',
+  '#e777ab',
+  '#e89d51',
+  '#7bc6ad',
+  '#d5daf7',
+  '#f6b749',
+  '#c48dbc',
+  '#d95f97',
+  '#75c7cb',
+  '#D4314E',
+  '#229773',
+  '#ECDF5C',
 
+
+];
 let lines = [
   random(fiveSyllablesLines),
   random(sevenSyllablesLines),
   random(fiveSyllablesLines),
-]
+];
 
 let linesP = [
   lines[0],
@@ -41,6 +71,7 @@ let linesP = [
 let button = document.getElementById('btn');
 let newer = document.getElementById('new');
 
+//detect when lines are clicked
 for (let i = 0; i < linesP.length; i++) {
   linesP[i] = document.getElementById(`line-${i}`);
   linesP[i].innerText = lines[i];
@@ -48,18 +79,22 @@ for (let i = 0; i < linesP.length; i++) {
 
 }
 
+//check buttons being pressed
 button.addEventListener('click', reading);
 newer.addEventListener('click', generateNew);
 
+
+//genertate a new Haiku
 function generateNew() {
   linesP[0].innerText = random(fiveSyllablesLines);
 
   linesP[2].innerText = random(fiveSyllablesLines);
 
   linesP[1].innerText = random(sevenSyllablesLines);
-
+  document.body.style['background-color'] = random(bgs);
 }
 
+//voice speaking the Haiku
 function reading() {
   for (let i = 0; i < linesP.length; i++) {
     responsiveVoice.speak(linesP[i].innerText);
@@ -67,11 +102,13 @@ function reading() {
 }
 
 
+//function to call the fade out
 function lineClicked(event) {
   fadeOut(event.target, 1);
 
 }
 
+//animation of fadeOut
 function fadeOut(element, opacity) {
   opacity -= 0.01;
   element.style['opacity'] = opacity;
@@ -84,7 +121,7 @@ function fadeOut(element, opacity) {
     fadeIn(element, opacity);
   }
 }
-
+//animation of fadein
 function fadeIn(element, opacity) {
   opacity += 0.01;
   element.style['opacity'] = opacity;
@@ -95,6 +132,7 @@ function fadeIn(element, opacity) {
   }
 }
 
+//replace 1 line when clicked
 function setNewLine(element) {
   if (element === linesP[0] || element === linesP[2]) {
     element.innerText = random(fiveSyllablesLines);
@@ -116,7 +154,7 @@ function setNewLine(element) {
 }
 
 
-
+//randomizer
 function random(array) {
   let index = Math.floor(Math.random() * array.length);
   return array[index];
