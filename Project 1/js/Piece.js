@@ -4,7 +4,6 @@ class Piece {
     this.x = x;
     this.y = y;
     this.size = size;
-    //this.vy=vy;
     this.color = color;
     this.grabbed = false;
 
@@ -16,6 +15,11 @@ class Piece {
     noStroke();
     ellipse(this.x, this.y, this.size);
     pop();
+
+    if (this.grabbed === true) {
+      this.x = mouseX;
+      this.y = mouseY;
+    }
   }
 
 

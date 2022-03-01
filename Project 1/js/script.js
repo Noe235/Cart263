@@ -10,6 +10,9 @@ author, and this description to match your project!
 
 let gamestate = 'menu' //menu,gamejob,gamereal,gameover,
 
+let score = 0;
+let time = 60;
+
 
 let pieces = [];
 let nbpieces = 5; //undefined;
@@ -54,6 +57,7 @@ function preload() {
 Description of setup
 */
 function setup() {
+  createCanvas(800, 800);
   //prepping the work
   for (let i = 0; i < nbpieces; i++) {
     let x = random(0, width);
@@ -82,7 +86,7 @@ function setupUserProfile(data) {
 Description of draw()
 */
 function draw() {
-  createCanvas(800, 800);
+
   background(0);
 
   //checking if there's user information
@@ -154,25 +158,202 @@ function draw() {
 
 
   if (gamestate === 'gamejob') {
-    if (bankeddata === false) {
-      generateUserProfile();
-    }
+    // if (bankeddata === false) {
+    //   generateUserProfile();
+    // }
     for (let i = 0; i < pieces.length; i++) {
       pieces[i].display();
 
       let d = dist(mouseX, mouseY, pieces[i].x, pieces[i].y)
+      if (d < pieces[i].size / 2 && mouseIsPressed === true && pieces[i].grabbed === true) {
+        pieces[i].grabbed = false;
+      } else
       if (d < pieces[i].size / 2 && mouseIsPressed === true) {
-        pieces[i].x = mouseX;
-        pieces[i].y = mouseY;
+
+        pieces[i].grabbed = true;
       }
 
 
     }
+
+
+    drawBaskets();
+    checkBaskets();
+    timer();
+
+    //UI
+    push();
+    textSize(25);
+    fill(255, 255, 255);
+    text(`Score ${score}`, 20, 50);
+    pop();
+
+    push();
+    textSize(25);
+    fill(255, 255, 255);
+    text(`Time ${time}`, width - 150, 50);
+    pop();
+
+
+
   }
 
   if (gamestate === 'option') {
 
   }
+
+
+  if (gamestate === 'gameover') {
+    //display score
+    push();
+    textSize(70);
+    fill(255, 255, 255);
+    textAlign(CENTER);
+    textStyle(BOLD);
+    text('Good Job', width / 2, height / 4);
+    textSize(50);
+    text(`Score ${score}`, width / 2, height / 3)
+    pop();
+
+    //display buttons
+    push();
+    fill(142, 134, 0);
+
+    //play button
+    rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
+    //button
+    rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
+
+    pop();
+
+    // display text button
+    push();
+    fill(255, 255, 255);
+    textSize(30);
+    textAlign(CENTER);
+    //play button
+    text('Play Again', width / 2 - 5, height / 5 * 2 + 60)
+    //button
+    text('Main Menu', width / 2, height / 5 * 3 + 60) //might be score board
+
+    pop();
+  }
+
+  if (gamestate === 'gameoverspecial') {
+    push();
+    fill(142, 134, 0);
+
+    //play button
+    rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
+    //button
+    rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
+
+    pop();
+
+    // display text button
+    push();
+    fill(255, 255, 255);
+    textSize(30);
+    textAlign(CENTER);
+    //play button
+    text('Yes', width / 2 - 5, height / 5 * 2 + 60)
+    //button
+    text('No', width / 2, height / 5 * 3 + 60) //might be score board
+
+    pop();
+  }
+}
+
+function timer() {
+  if (time != 0) {
+    time -= 1
+  }
+  if (time === 0) {
+    let chance = random(0, 1);
+    if (chance < 0.05) {
+      gamestate = 'gameoverspecial';
+      console.log(chance)
+    } else {
+
+      gamestate = 'gameover';
+      console.log(chance)
+    }
+  }
+
+}
+
+function makeNewPieces() {
+  if (pieces.length < nbpieces) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let size = 50;
+    let color = random(colorchoice);
+    let work = new Piece(x, y, size, color);
+    pieces.push(work);
+  }
+}
+
+function drawBaskets() {
+  //red square
+  push();
+  fill(255, 0, 0, 50);
+  stroke(255, 0, 0);
+  strokeWeight(4);
+  rect(width / 7, height / 2, 150, 150);
+  pop();
+
+  //blue square
+  push();
+  fill(0, 0, 255, 50);
+  stroke(0, 0, 255);
+  strokeWeight(4);
+  rect(width * 2 / 5, height / 6, 150, 150);
+  pop();
+
+  //green square
+  push();
+  fill(0, 255, 0, 50);
+  stroke(0, 255, 0);
+  strokeWeight(4);
+  rect(width * 2 / 3, height / 2, 150, 150);
+  pop();
+}
+
+function checkBaskets() {
+  for (let i = 0; i < pieces.length; i++) {
+    let temp = pieces[i];
+    let d = dist(width / 7 + 75, height / 2 + 75, temp.x, temp.y)
+    //check red basket
+    if (d < 75 && mouseIsPressed === true && pieces[i].color.r === 255) {
+      score++
+
+      pieces.splice(i, 1);
+
+    }
+
+
+    //check blue basket
+    d = dist(width * 2 / 5 + 75, height / 6 + 75, temp.x, temp.y)
+    if (d < 75 && mouseIsPressed === true && pieces[i].color.b === 255) {
+      score++
+
+      pieces.splice(i, 1);
+
+    }
+
+    //check green basket
+    d = dist(width * 2 / 3 + 75, height / 2 + 75, temp.x, temp.y)
+    if (d < 75 && mouseIsPressed === true && pieces[i].color.g === 255) {
+      score++
+
+      pieces.splice(i, 1);
+
+    }
+    makeNewPieces();
+  }
+
+
+
 }
 
 function mousePressed() {
@@ -194,14 +375,35 @@ function mousePressed() {
     }
   }
 
-  if (gamestate === 'gamejob') {
-    for (let i = 0; i < pieces.length; i++) {
-
-    }
-  }
+  if (gamestate === 'gamejob') {}
 
   if (gamestate === 'option') {
 
+  }
+
+  if (gamestate === 'gameover') {
+    if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+      mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
+      gamestate = 'gamejob'
+      score = 0
+      time = 60
+      for (let i = 0; i < nbpieces; i++) {
+        let x = random(0, width);
+        let y = random(0, height);
+        let size = 50;
+        let color = random(colorchoice);
+        let work = new Piece(x, y, size, color);
+        pieces.push(work);
+      }
+
+    }
+    //option button
+    if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+      mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
+      gamestate = 'menu'
+      score = 0
+      time = 60
+    }
   }
 }
 
