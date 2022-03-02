@@ -7,6 +7,11 @@ author, and this description to match your project!
 */
 
 "use strict";
+//last stuff to add userProfile.specialmode = true -> make a toggle
+//
+//
+//
+
 
 let gamestate = 'menu' //menu,gamejob,gamereal,gameover,
 
@@ -39,6 +44,7 @@ let userProfile = {
   name: 'undefined',
   age: 'undefined',
   dream: 'undefined',
+  specialmode: false,
 
 }
 let bankeddata = false;
@@ -108,7 +114,7 @@ function draw() {
     fill(255, 255, 255);
     textAlign(CENTER);
     textStyle(BOLD);
-    text('Job simulator', width / 2, height / 4)
+    text('Job simulator', width / 2, height / 4);
     pop();
 
     //display buttons
@@ -156,6 +162,60 @@ function draw() {
     }
   }
 
+  if (gamestate === 'gamemenuspecial') {
+
+    //display tittle
+    push();
+    textSize(70);
+    fill(255, 255, 255);
+    textAlign(CENTER);
+    textStyle(BOLD);
+    text('Job simulator', width / 2, height / 5 - 10);
+    textSize(50);
+    text(`Revue Mode`, width / 2, height / 4);
+    pop();
+
+    //display buttons
+    push();
+    fill(142, 134, 0);
+
+    //play button
+    rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
+    //button
+    rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
+
+    pop();
+
+    // display text button
+    push();
+    fill(255, 255, 255);
+    textSize(30);
+    textAlign(CENTER);
+    //play button
+    text('Start', width / 2 - 5, height / 5 * 2 + 60)
+    //button
+    text('options', width / 2, height / 5 * 3 + 60) //might be score board
+    pop();
+
+    if (bankeddata === true) {
+      push();
+      textSize(22);
+      fill(255, 255, 255);
+      textAlign(CENTER);
+      textStyle(BOLD);
+      text(`Welcome back ${userProfile.name}`, width / 2, height / 4 + 50)
+      pop();
+
+      push()
+      //data detection
+      textSize(13);
+      fill(255, 255, 255);
+      text('Data detected', 10, height - 25);
+      textSize(11);
+      text('Press C to delete it', 10, height - 15);
+      pop();
+    }
+  }
 
   if (gamestate === 'gamejob') {
     // if (bankeddata === false) {
@@ -197,7 +257,40 @@ function draw() {
 
 
   }
+  if (gamestate === 'gamereal') {
+    for (let i = 0; i < pieces.length; i++) {
+      pieces[i].display();
 
+      let d = dist(mouseX, mouseY, pieces[i].x, pieces[i].y)
+      if (d < pieces[i].size / 2 && mouseIsPressed === true && pieces[i].grabbed === true) {
+        pieces[i].grabbed = false;
+      } else
+      if (d < pieces[i].size / 2 && mouseIsPressed === true) {
+
+        pieces[i].grabbed = true;
+      }
+
+
+    }
+
+
+    drawBaskets();
+    checkBaskets();
+    timer();
+
+    //UI
+    push();
+    textSize(25);
+    fill(255, 255, 255);
+    text(`Score ${score}`, 20, 50);
+    pop();
+
+    push();
+    textSize(25);
+    fill(255, 255, 255);
+    text(`Time ${time}`, width - 150, 50);
+    pop();
+  }
   if (gamestate === 'option') {
 
   }
@@ -212,7 +305,7 @@ function draw() {
     textStyle(BOLD);
     text('Good Job', width / 2, height / 4);
     textSize(50);
-    text(`Score ${score}`, width / 2, height / 3)
+    text(`Score ${score}`, width / 2, height / 3);
     pop();
 
     //display buttons
@@ -240,6 +333,20 @@ function draw() {
   }
 
   if (gamestate === 'gameoverspecial') {
+    //display score
+    push();
+    textSize(40);
+    fill(255, 255, 255);
+    textAlign(CENTER);
+    textStyle(BOLD);
+    text('You have unlocked a special game mode', width / 2, height / 4);
+    textSize(45);
+    text(`Would you like to try it?`, width / 2, height / 3);
+    pop();
+
+
+
+
     push();
     fill(142, 134, 0);
 
@@ -269,14 +376,15 @@ function timer() {
     time -= 1
   }
   if (time === 0) {
-    let chance = random(0, 1);
-    if (chance < 0.05) {
-      gamestate = 'gameoverspecial';
-      console.log(chance)
+    if (userProfile.specialmode === false) {
+      let chance = random(0, 1);
+      if (chance < 0.5) {
+        gamestate = 'gameoverspecial';
+
+      }
     } else {
 
       gamestate = 'gameover';
-      console.log(chance)
     }
   }
 
@@ -377,16 +485,58 @@ function mousePressed() {
 
   if (gamestate === 'gamejob') {}
 
+  if (gamestate === 'gamemenuspecial') {
+    if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+      mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
+      gamestate = 'gamereal'
+      score = 0
+      time = 600
+      for (let i = 0; i < nbpieces; i++) {
+        let x = random(0, width);
+        let y = random(0, height);
+        let size = 50;
+        let color = random(colorchoice);
+        let work = new Piece(x, y, size, color);
+        pieces.push(work);
+      }
+    }
+    //option button
+    if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+      mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
+      gamestate = 'option'
+    }
+  }
   if (gamestate === 'option') {
 
   }
 
+  //
+  if (gamestate === 'gameoverspecial') {
+    if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+      mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
+      gamestate = 'gamemenuspecial'
+      userProfile.specialmode = true
+    }
+    //option button
+    if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+      mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
+      gamestate = 'menu'
+    }
+  }
   if (gamestate === 'gameover') {
     if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
       mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
-      gamestate = 'gamejob'
+
+      if (userProfile.specialmode === false) {
+        gamestate = 'gamejob'
+        time = 60
+      } else if (userProfile.specialmode === true) {
+        gamestate = 'gamereal'
+        time = 600
+      }
+
       score = 0
-      time = 60
+
       for (let i = 0; i < nbpieces; i++) {
         let x = random(0, width);
         let y = random(0, height);
@@ -397,14 +547,25 @@ function mousePressed() {
       }
 
     }
-    //option button
+    //main menu button
     if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
       mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
-      gamestate = 'menu'
+      if (userProfile.specialmode === false) {
+        gamestate = 'menu'
+        time = 60
+      } else if (userProfile.specialmode === true) {
+        gamestate = 'gamemenuspecial'
+        time = 600
+      }
       score = 0
-      time = 60
     }
   }
+
+
+
+
+
+
 }
 
 function keyPressed() {
