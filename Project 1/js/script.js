@@ -18,6 +18,7 @@ let gameoverlay = false;
 
 let score = 0;
 let time = 6000;
+let counter = 0;
 let badQuotes = [
   //pen;sword;katana
   `A hazy landscape, a perishing dream,you can not see ahead`, `With your excuses all you do is parrot time`, `your dream is just a piece of trash`, `what have you been looking at all those years?`, `your struggle was foolish,blazing, and beautiful,but that's the best you'll ever do`, `go subsist on nothing but the haze of your pipe dream`, `aren't you tired of not being able to reach your dream? of not being enough?`, `Isn't it time to give up after years?`, `what have you been doing these past years?`, `"" what a waste of a space`, `Stop, Give up, Stay down, trying desperatly won't change anything`, `""a plausable dream, yet unreachable for you`
@@ -318,24 +319,29 @@ function draw() {
 
 
 
-
+      counting();
+      console.log(counter);
       //interferences
-      let change = random(0, 1);
-      if (change < 0.06) {
-        //take a random quote
-        curquote = random(badQuotes);
-        curheight = random(50, height - 50)
-        //place the square randomly
+      if (counter > 300) {
+        let change = random(0, 1);
+        console.log(change);
+        if (change < 0.5) {
+          //take a random quote
+          curquote = random(badQuotes);
+          curheight = random(50, height - 50)
+          //place the square randomly
 
-        cursquare.x = random(width);
-        cursquare.y = random(height);
+          cursquare.x = random(width);
+          cursquare.y = random(height);
 
-        //turn on the "pause "
-        gameoverlay = true
+          //turn on the "pause "
+          gameoverlay = true
 
 
+        }
+
+        counter = 0
       }
-
 
       if (gamestate === 'option') {
 
@@ -469,9 +475,14 @@ function draw() {
   }
 }
 
+function counting() {
+  counter += 1;
+}
+
 function timer() {
   if (time != 0) {
-    time -= 1
+    time -= 1;
+
   }
   if (time === 0) {
     if (userProfile.specialmode === true) {
