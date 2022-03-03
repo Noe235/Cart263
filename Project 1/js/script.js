@@ -2,13 +2,11 @@
 A night at the movie
 Noemie
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+click  the ball and put them in the right box
 */
 
 "use strict";
-//last stuff to add userProfile.specialmode = true -> make a toggle
-//
+
 //
 //
 
@@ -22,14 +20,28 @@ let time = 6000;
 let counter = 0;
 let badQuotes = [
   //pen;sword;katana
-  `A hazy landscape, a perishing dream,you are blinded`, `With your excuses all you do is parrot time`, `your dream is just a piece of trash`, `what have you been looking at all those years?`, `your struggle was foolish,blazing, and beautiful,but that's the best you'll ever do`, `go subsist on nothing but the haze of your pipe dream`, `aren't you tired of not being able to reach your dream?`, `Isn't it time to give up after years?`, `what have you been doing these past years?`, `"" what a waste of a space`, `Stop,trying desperatly won't change anything`, `""a plausable dream, yet unreachable for you`
-  //widl screen baroque
-  , ,
+  `A hazy landscape, a perishing dream,you are blinded`, `With your excuses all you do is parrot time`, `your dream is just a piece of trash`, `what have you been looking at all those years?`, `your struggle was foolish,blazing, that's the best you'll ever do`, `go subsist on nothing but the haze of your pipe dream`, `aren't you tired of not being able to reach your dream?`, `Isn't it time to give up after # years?`, `what have you been doing these past # years?`, `"%" what a waste of a space`, `Stop,trying desperatly won't change anything`, `"%"a plausable dream, yet unreachable for you`,
 
 ];
 
 let goodQuotes = [
-  'its working'
+  `don't let you resolve falter`,
+  `don't let anybody get in your way`,
+  `if you keep going you will get your dream`,
+  `keep aiming for you dream`,
+  `don't give up, it's not the end`,
+  `falling is part of the process, get up @`,
+  `You can't stop yet you have to keep going`,
+  `# years old, is never too late to dream`,
+  `You can do it @`,
+  `your journey doesn't end until you give up`,
+  `you are the lead of you life`,
+  `Step over your limits and more`,
+  `it's not the end @, keep going`,
+  `your will is stonger than you think`,
+
+
+
 ];
 let curquote = 'undefined';
 let curheight = 0;
@@ -82,7 +94,7 @@ function preload() {
 
 
 /**
-Description of setup
+make the balls
 */
 function setup() {
   createCanvas(900, 900);
@@ -98,7 +110,6 @@ function setup() {
   }
 
 
-
 }
 
 function setupUserProfile(data) {
@@ -108,11 +119,16 @@ function setupUserProfile(data) {
 
   userProfile.dream = data.dream;
 
+  userProfile.specialmode = data.specialmode;
+
+  userProfile.encouragemode = data.encouragemode;
+
+
 
 }
 
 /**
-Description of draw()
+
 */
 function draw() {
   if (gameoverlay === false) {
@@ -123,6 +139,27 @@ function draw() {
     if (data) {
       setupUserProfile(data);
       bankeddata = true;
+      //replace personal parts
+      badQuotes = badQuotes.map(function (x) {
+        return x.replace(/@/g, `${userProfile.name}`)
+      });
+      badQuotes = badQuotes.map(function (x) {
+        return x.replace(/#/g, `${userProfile.age}`)
+      });
+      badQuotes = badQuotes.map(function (x) {
+        return x.replace(/%/g, `${userProfile.dream}`)
+      });
+      //replace goodpart
+      goodQuotes = goodQuotes.map(function (x) {
+        return x.replace(/@/g, `${userProfile.name}`)
+      });
+      goodQuotes = goodQuotes.map(function (x) {
+        return x.replace(/#/g, `${userProfile.age}`)
+      });
+      goodQuotes = goodQuotes.map(function (x) {
+        return x.replace(/%/g, `${userProfile.dream}`)
+      });
+
     }
 
 
@@ -142,12 +179,10 @@ function draw() {
 
       //display buttons
       push();
-      fill(142, 134, 0);
+      fill(135, 10, 207);
 
       //play button
       rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
-      //button
-      rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
       if (best === true) {
         //button
         rect(width / 3, height / 5 * 4, width / 3, height / 8, 10)
@@ -161,8 +196,6 @@ function draw() {
       textAlign(CENTER);
       //play button
       text('Start', width / 2 - 5, height / 5 * 2 + 60)
-      //button
-      text('options', width / 2, height / 5 * 3 + 60) //might be score board
       //button
       if (best === true) {
         text('special mode', width / 2, height / 5 * 4 + 60) //will be hidden
@@ -204,12 +237,11 @@ function draw() {
 
       //display buttons
       push();
-      fill(142, 134, 0);
+      fill(135, 10, 207);
 
       //play button
       rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
-      //button
-      rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
+
 
       pop();
 
@@ -220,8 +252,7 @@ function draw() {
       textAlign(CENTER);
       //play button
       text('Start', width / 2 - 5, height / 5 * 2 + 60)
-      //button
-      text('options', width / 2, height / 5 * 3 + 60) //might be score board
+
       pop();
 
       if (bankeddata === true) {
@@ -244,10 +275,11 @@ function draw() {
       }
     }
 
+    //normal gamemode
     if (gamestate === 'gamejob') {
-      // if (bankeddata === false) {
-      //   generateUserProfile();
-      // }
+      if (bankeddata === false) {
+        generateUserProfile();
+      }
       for (let i = 0; i < pieces.length; i++) {
         pieces[i].display();
 
@@ -279,12 +311,38 @@ function draw() {
       push();
       textSize(25);
       fill(255, 255, 255);
-      text(`Time ${time}`, width - 150, 50);
+      text(`Time ${round(time/60)}`, width - 150, 50);
       pop();
 
+      if (userProfile.encouragemode === true) {
+        counting();
+        //interferences
+        if (counter > 300) {
+          let change = random(0, 1);
 
+          if (change < 0.5) {
+            //take a random quote
+            curquote = random(goodQuotes);
+            curheight = random(50, height - 50)
+            //place the square randomly
+
+            cursquare.x = random(width);
+            cursquare.y = random(height);
+
+            //turn on the "pause "
+            gameoverlay = true
+
+
+          }
+
+          counter = 0
+        }
+
+      }
 
     }
+
+    //bad vide part version
     if (gamestate === 'gamereal') {
       for (let i = 0; i < pieces.length; i++) {
         pieces[i].display();
@@ -316,17 +374,16 @@ function draw() {
       push();
       textSize(25);
       fill(255, 255, 255);
-      text(`Time ${time}`, width - 150, 50);
+      text(`Time ${round(time/60)}`, width - 150, 50);
       pop();
 
 
 
       counting();
-      console.log(counter);
+
       //interferences
       if (counter > 300) {
         let change = random(0, 1);
-        console.log(change);
         if (change < 0.5) {
           //take a random quote
           curquote = random(badQuotes);
@@ -346,10 +403,7 @@ function draw() {
       }
     }
 
-    if (gamestate === 'option') {
-
-    }
-
+    //ideal gamemode with encourgement
     if (gamestate === 'gamebest') {
       for (let i = 0; i < pieces.length; i++) {
         pieces[i].display();
@@ -381,7 +435,7 @@ function draw() {
       push();
       textSize(25);
       fill(255, 255, 255);
-      text(`Time ${time}`, width - 150, 50);
+      text(`Time ${round(time/60)}`, width - 150, 50);
       pop();
 
 
@@ -415,6 +469,7 @@ function draw() {
 
     }
 
+    //normal gameover
     if (gamestate === 'gameover') {
 
 
@@ -424,9 +479,9 @@ function draw() {
       fill(255, 255, 255);
       textAlign(CENTER);
       textStyle(BOLD);
-      if (score > goal || userProfile.encouragemode === true) {
+      if (userProfile.encouragemode === true || score > goal) {
         text('Good Job', width / 2, height / 4);
-      } else {
+      } else if (score < goal && userProfile.encouragemode === false) {
         text('Try better', width / 2, height / 4);
       }
       textSize(50);
@@ -435,7 +490,7 @@ function draw() {
 
       //display buttons
       push();
-      fill(142, 134, 0);
+      fill(135, 10, 207);
 
       //play button
       rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
@@ -457,6 +512,7 @@ function draw() {
       pop();
     }
 
+    //
     if (gamestate === 'gameoverspecial') {
       //display score
       push();
@@ -473,7 +529,7 @@ function draw() {
 
 
       push();
-      fill(142, 134, 0);
+      fill(135, 10, 207);
 
       //play button
       rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
@@ -510,7 +566,7 @@ function draw() {
 
       //display buttons
       push();
-      fill(142, 134, 0);
+      fill(135, 10, 207);
 
       //play button
       rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
@@ -538,20 +594,12 @@ function draw() {
     if (userProfile.specialmode === true) {
 
       push();
-      fill(255, 255, 255);
+      strokeWeight(4);
+      fill(149, 202, 237);
       textSize(35);
       textAlign(CENTER);
       text(`${curquote}`, width / 2, curheight);
       pop();
-      // push();
-      // fill(0, 0, 0);
-      // textSize(30);
-      // textAlign(CENTER);
-      // text(`${curquote}`, width / 2, height / 4);
-      // pop();
-
-
-
 
       push();
       fill(123, 20, 153);
@@ -561,7 +609,7 @@ function draw() {
 
       //no
       push();
-      fill(255, 255, 255);
+      fill(149, 202, 237);
       textSize(30);
       textAlign(CENTER);
       text(`NO`, cursquare.x + cursquare.width / 2, cursquare.y + cursquare.height * 2 / 3);
@@ -572,7 +620,8 @@ function draw() {
     }
     if (userProfile.encouragemode === true) {
       push();
-      fill(255, 255, 255);
+      strokeWeight(4);
+      fill(149, 202, 237);
       textSize(35);
       textAlign(CENTER);
       text(`${curquote}`, width / 2, curheight);
@@ -586,8 +635,8 @@ function draw() {
 
       //no
       push();
-      fill(255, 255, 255);
-      textSize(30);
+      fill(149, 202, 237);
+      textSize(25);
       textAlign(CENTER);
       text(`YES`, cursquare.x + cursquare.width / 2, cursquare.y + cursquare.height * 2 / 3);
       pop();
@@ -608,28 +657,30 @@ function timer() {
 
   }
   if (time === 0) {
-    if (userProfile.specialmode === true) {
-      if (score > 2 * goal) {
+    if (userProfile.encouragemode === true) {
+      gamestate = 'gameover';
+    }
+    if (userProfile.specialmode === true && userProfile.encouragemode === false) {
+      if (score > goal * 2) {
         gamestate = 'gameovergood'
-      } else {
+      } else if (score < goal * 2) {
         gamestate = 'gameover';
       }
+
 
     }
 
+    if (score > goal && userProfile.specialmode === false && userProfile.encouragemode === false) {
+      let chance = random(0, 1);
+      if (chance < 0.5) {
+        gamestate = 'gameoverspecial';
 
-    if (score > goal) {
-      if (userProfile.specialmode === false && userProfile.encouragemode === false) {
-        let chance = random(0, 1);
-        if (chance < 0.5) {
-          gamestate = 'gameoverspecial';
-
-        }
       } else {
 
         gamestate = 'gameover';
+
       }
-    } else {
+    } else if (score < goal) {
 
       gamestate = 'gameover';
     }
@@ -719,11 +770,6 @@ function mousePressed() {
         mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
         gamestate = 'gamejob'
       }
-      //option button
-      if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
-        mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
-        gamestate = 'option'
-      }
       //special mode
       if (best === true) {
         if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
@@ -752,14 +798,6 @@ function mousePressed() {
           pieces.push(work);
         }
       }
-      //option button
-      if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
-        mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
-        gamestate = 'option'
-      }
-    }
-    if (gamestate === 'option') {
-
     }
 
     //
@@ -768,11 +806,24 @@ function mousePressed() {
         mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
         gamestate = 'gamemenuspecial'
         userProfile.specialmode = true
+
+        localStorage.setItem(PROFILE_USER_ANIGHTATTHEMOVIE, JSON.stringify(userProfile));
+
       }
-      //option button
+      //menu button
       if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
         mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
         gamestate = 'menu'
+        score = 0
+        time = 6000
+        for (let i = 0; i < nbpieces; i++) {
+          let x = random(0, width);
+          let y = random(0, height);
+          let size = 50;
+          let color = random(colorchoice);
+          let work = new Piece(x, y, size, color);
+          pieces.push(work);
+        }
       }
     }
     if (gamestate === 'gameover') {
@@ -781,7 +832,7 @@ function mousePressed() {
 
         if (userProfile.specialmode === false) {
           gamestate = 'gamejob'
-          time = 600
+          time = 6000
         } else if (userProfile.specialmode === true) {
           gamestate = 'gamereal'
           time = 6000
@@ -804,7 +855,7 @@ function mousePressed() {
         mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
         if (userProfile.specialmode === false) {
           gamestate = 'menu'
-          time = 600
+          time = 6000
         } else if (userProfile.specialmode === true) {
           gamestate = 'gamemenuspecial'
           time = 6000
@@ -818,13 +869,40 @@ function mousePressed() {
       if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
         mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
         userProfile.specialmode = false;
+        userProfile.encouragemode = true;
+        localStorage.setItem(PROFILE_USER_ANIGHTATTHEMOVIE, JSON.stringify(userProfile));
+
+        score = 0
+        time = 6000
+        for (let i = 0; i < nbpieces; i++) {
+          let x = random(0, width);
+          let y = random(0, height);
+          let size = 50;
+          let color = random(colorchoice);
+          let work = new Piece(x, y, size, color);
+          pieces.push(work);
+        }
+
         gamestate = 'gamebest'
       }
       if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
         mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
         userProfile.specialmode = false;
+        userProfile.encouragemode = true;
+        localStorage.setItem(PROFILE_USER_ANIGHTATTHEMOVIE, JSON.stringify(userProfile));
+
         gamestate = 'Menu'
 
+        score = 0
+        time = 6000
+        for (let i = 0; i < nbpieces; i++) {
+          let x = random(0, width);
+          let y = random(0, height);
+          let size = 50;
+          let color = random(colorchoice);
+          let work = new Piece(x, y, size, color);
+          pieces.push(work);
+        }
 
       }
 
@@ -882,6 +960,10 @@ function generateUserProfile() {
   userProfile.age = prompt(`How old are you?`);
   // Ask for the user's dream
   userProfile.dream = prompt(`What is your dream?`);
+
+  userProfile.specialmode = false;
+
+  userProfile.encouragemode = false;
 
   // Save the resulting profile to local storage
   localStorage.setItem(PROFILE_USER_ANIGHTATTHEMOVIE, JSON.stringify(userProfile));
