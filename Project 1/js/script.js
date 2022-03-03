@@ -14,6 +14,7 @@ author, and this description to match your project!
 
 
 let gamestate = 'menu'; //menu,gamejob,gamereal,gameover,
+let best = false
 let gameoverlay = false;
 
 let score = 0;
@@ -21,13 +22,15 @@ let time = 6000;
 let counter = 0;
 let badQuotes = [
   //pen;sword;katana
-  `A hazy landscape, a perishing dream,you can not see ahead`, `With your excuses all you do is parrot time`, `your dream is just a piece of trash`, `what have you been looking at all those years?`, `your struggle was foolish,blazing, and beautiful,but that's the best you'll ever do`, `go subsist on nothing but the haze of your pipe dream`, `aren't you tired of not being able to reach your dream? of not being enough?`, `Isn't it time to give up after years?`, `what have you been doing these past years?`, `"" what a waste of a space`, `Stop, Give up, Stay down, trying desperatly won't change anything`, `""a plausable dream, yet unreachable for you`
+  `A hazy landscape, a perishing dream,you are blinded`, `With your excuses all you do is parrot time`, `your dream is just a piece of trash`, `what have you been looking at all those years?`, `your struggle was foolish,blazing, and beautiful,but that's the best you'll ever do`, `go subsist on nothing but the haze of your pipe dream`, `aren't you tired of not being able to reach your dream?`, `Isn't it time to give up after years?`, `what have you been doing these past years?`, `"" what a waste of a space`, `Stop,trying desperatly won't change anything`, `""a plausable dream, yet unreachable for you`
   //widl screen baroque
   , ,
 
 ];
 
-
+let goodQuotes = [
+  'its working'
+];
 let curquote = 'undefined';
 let curheight = 0;
 let cursquare = {
@@ -145,8 +148,10 @@ function draw() {
       rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
       //button
       rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
-      //button
-      rect(width / 3, height / 5 * 4, width / 3, height / 8, 10)
+      if (best === true) {
+        //button
+        rect(width / 3, height / 5 * 4, width / 3, height / 8, 10)
+      }
       pop();
 
       // display text button
@@ -159,7 +164,9 @@ function draw() {
       //button
       text('options', width / 2, height / 5 * 3 + 60) //might be score board
       //button
-      text('special mode', width / 2, height / 5 * 4 + 60) //will be hidden
+      if (best === true) {
+        text('special mode', width / 2, height / 5 * 4 + 60) //will be hidden
+      }
       pop();
 
       if (bankeddata === true) {
@@ -268,11 +275,6 @@ function draw() {
       text(`Score ${score}`, 20, 50);
       pop();
 
-      // push();
-      // textSize(25);
-      // fill(255, 255, 255);
-      // text(`Goal `, 20, 50);
-      // pop();
 
       push();
       textSize(25);
@@ -342,10 +344,75 @@ function draw() {
 
         counter = 0
       }
+    }
 
-      if (gamestate === 'option') {
+    if (gamestate === 'option') {
+
+    }
+
+    if (gamestate === 'gamebest') {
+      for (let i = 0; i < pieces.length; i++) {
+        pieces[i].display();
+
+        let d = dist(mouseX, mouseY, pieces[i].x, pieces[i].y)
+        if (d < pieces[i].size / 2 && mouseIsPressed === true && pieces[i].grabbed === true) {
+          pieces[i].grabbed = false;
+        } else
+        if (d < pieces[i].size / 2 && mouseIsPressed === true) {
+
+          pieces[i].grabbed = true;
+        }
+
 
       }
+
+
+      drawBaskets();
+      checkBaskets();
+      timer();
+
+      //UI
+      push();
+      textSize(25);
+      fill(255, 255, 255);
+      text(`Score ${score}`, 20, 50);
+      pop();
+
+      push();
+      textSize(25);
+      fill(255, 255, 255);
+      text(`Time ${time}`, width - 150, 50);
+      pop();
+
+
+
+      counting();
+      //interferences
+      if (counter > 300) {
+        let change = random(0, 1);
+
+        if (change < 0.5) {
+          //take a random quote
+          curquote = random(goodQuotes);
+          curheight = random(50, height - 50)
+          //place the square randomly
+
+          cursquare.x = random(width);
+          cursquare.y = random(height);
+
+          //turn on the "pause "
+          gameoverlay = true
+
+
+        }
+
+        counter = 0
+      }
+
+
+
+
+
     }
 
     if (gamestate === 'gameover') {
@@ -357,7 +424,7 @@ function draw() {
       fill(255, 255, 255);
       textAlign(CENTER);
       textStyle(BOLD);
-      if (score > goal) {
+      if (score > goal || userProfile.encouragemode === true) {
         text('Good Job', width / 2, height / 4);
       } else {
         text('Try better', width / 2, height / 4);
@@ -427,6 +494,43 @@ function draw() {
 
       pop();
     }
+
+
+    if (gamestate === 'gameovergood') {
+      //display score
+      push();
+      textSize(70);
+      fill(255, 255, 255);
+      textAlign(CENTER);
+      textStyle(BOLD);
+      text('Congratz', width / 2, height / 4);
+      textSize(50);
+      text(`Score ${score}`, width / 2, height / 3);
+      pop();
+
+      //display buttons
+      push();
+      fill(142, 134, 0);
+
+      //play button
+      rect(width / 3, height / 5 * 2, width / 3, height / 8, 10)
+      //button
+      rect(width / 3, height / 5 * 3, width / 3, height / 8, 10)
+
+      pop();
+
+      // display text button
+      push();
+      fill(255, 255, 255);
+      textSize(30);
+      textAlign(CENTER);
+      //play button
+      text('Play Best Mode', width / 2 - 5, height / 5 * 2 + 60)
+      //button
+      text('Main Menu', width / 2, height / 5 * 3 + 60)
+
+      pop();
+    }
   }
 
   //overlay / interferences
@@ -467,7 +571,26 @@ function draw() {
 
     }
     if (userProfile.encouragemode === true) {
+      push();
+      fill(255, 255, 255);
+      textSize(35);
+      textAlign(CENTER);
+      text(`${curquote}`, width / 2, curheight);
+      pop();
 
+      push();
+      fill(123, 20, 153);
+      strokeWeight(0);
+      rect(cursquare.x, cursquare.y, cursquare.width, cursquare.height);
+      pop();
+
+      //no
+      push();
+      fill(255, 255, 255);
+      textSize(30);
+      textAlign(CENTER);
+      text(`YES`, cursquare.x + cursquare.width / 2, cursquare.y + cursquare.height * 2 / 3);
+      pop();
     }
 
 
@@ -496,7 +619,7 @@ function timer() {
 
 
     if (score > goal) {
-      if (userProfile.specialmode === false) {
+      if (userProfile.specialmode === false && userProfile.encouragemode === false) {
         let chance = random(0, 1);
         if (chance < 0.5) {
           gamestate = 'gameoverspecial';
@@ -602,9 +725,13 @@ function mousePressed() {
         gamestate = 'option'
       }
       //special mode
-      if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
-        mouseY > height / 5 * 4 && mouseY < height / 5 * 4 + height / 8) {
-        console.log('special')
+      if (best === true) {
+        if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+          mouseY > height / 5 * 4 && mouseY < height / 5 * 4 + height / 8) {
+          userProfile.encouragemode = true
+          gamestate = 'gamebest';
+
+        }
       }
     }
 
@@ -685,31 +812,58 @@ function mousePressed() {
         score = 0
       }
     }
+
+
+    if (gamestate === 'gameovergood') {
+      if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+        mouseY > height / 5 * 2 && mouseY < height / 5 * 2 + height / 8) {
+        userProfile.specialmode = false;
+        gamestate = 'gamebest'
+      }
+      if (mouseX > width / 3 && mouseX < width / 3 + width / 3 &&
+        mouseY > height / 5 * 3 && mouseY < height / 5 * 3 + height / 8) {
+        userProfile.specialmode = false;
+        gamestate = 'Menu'
+
+
+      }
+
+    }
+
+
+
   }
+
 
   if (gameoverlay === true) {
     if (userProfile.specialmode === true) {
       if (mouseX > cursquare.x && mouseX < cursquare.x + cursquare.width &&
         mouseY > cursquare.y && mouseY < cursquare.y + cursquare.height) {
         gameoverlay = false
-        console.log(`pressed right`)
 
 
       } else {
         time -= 60
         gameoverlay = false
-        console.log(`pressed wrong`)
+
       }
     }
-    if (userProfile.encouragemode === true) {
 
-      gameoverlay = false;
+    if (userProfile.encouragemode === true) {
+      if (mouseX > cursquare.x && mouseX < cursquare.x + cursquare.width &&
+        mouseY > cursquare.y && mouseY < cursquare.y + cursquare.height) {
+        time += 60;
+        gameoverlay = false;
+      } else {
+
+        gameoverlay = false;
+      }
+
     }
 
+
+
   }
-
-
-
 }
 
 function keyPressed() {
