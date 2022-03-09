@@ -1,14 +1,44 @@
 /**
-Title of Project
-Author Name
+raving revealer
+Noemie
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+reveal the text and say it outloud!
 */
 
 "use strict";
 let currentAnswer = `Click to begin.`;
 let copypastaAnswer = undefined;
+let bgs = [
+  '#fb5458',
+  '#6292e9',
+  '#61bf99',
+  '#fe9952',
+  '#cbc6cc',
+  '#95caee',
+  '#fdd162',
+  '#8c67aa',
+  '#e08696',
+  '#c699ee',
+  '#e5b2d1',
+  '#80c694',
+  '#aed482',
+  '#e07284',
+  '#eae681',
+  '#7fcdeb',
+  '#e777ab',
+  '#e89d51',
+  '#7bc6ad',
+  '#d5daf7',
+  '#f6b749',
+  '#c48dbc',
+  '#d95f97',
+  '#75c7cb',
+  '#D4314E',
+  '#229773',
+  '#ECDF5C',
+
+];
+
 
 //glasses
 let copypasta1 = `glasses are really versatile`;
@@ -36,12 +66,16 @@ let copypasta16 = `hey sharon i'm begging you i'm on my knees here pleading plea
 let copypasta17 = `sharon please forgive me i am on my knees begging for you forgiveness i wouldn't put anything above you and cart class but fate has sealed me to this endless procrastination toture i beg for forgiveness`;
 
 
+//chose a bg
+let bg = Math.floor(Math.random() * bgs.length);
+$(`body`).css(`background-color`, bgs[bg])
 
 //hide and chose a copypasta
 $(`.glasses`).hide()
 $(`.justdoit`).hide()
 $(`.niagarafalls`).hide()
 $(`.minecraft`).hide()
+
 let d = Math.floor(Math.random() * 4);
 if (d === 0) {
   $(`.glasses`).show()
@@ -72,7 +106,12 @@ if (d === 3) {
   copypastaAnswer = copypasta16
 }
 
+
+//chose another copypasta
 $(`h2`).on(`click`, function () {
+  bg = Math.floor(Math.random() * bgs.length);
+  $(`body`).css(`background-color`, bgs[bg])
+
   let r = Math.floor(Math.random() * 4);
   if (r === 0) {
     $(`.glasses`).show()
@@ -104,15 +143,12 @@ $(`h2`).on(`click`, function () {
   }
 });
 
+//reveal the hidden text
+$(`.top-secret`).on(`click`, reveal);
 
-$(`.top-secret`).on(`click`, redact);
-
-
-setInterval(revelation, 500);
+//interval to hide
+setInterval(redact, 500);
 currentAnswer = guessCopyPasta;
-
-
-
 
 // Is annyang available?
 if (annyang) {
@@ -127,19 +163,20 @@ if (annyang) {
 
 }
 
-
-
-function redact(event) {
+//reaveal text
+function reveal(event) {
 
   $(this).removeClass(`redacted`);
   $(this).addClass(`revealed`);
 
 }
 
-function revelation() {
+//redact text
+function redact() {
   $(`.revealed`).each(attemptReveal);
 }
 
+//redact interval
 function attemptReveal() {
   let r = Math.random();
   if (r < 0.05) {
@@ -148,83 +185,76 @@ function attemptReveal() {
   }
 }
 
+//trying to guess answer
 function guessCopyPasta(copypasta) {
   // Convert the guess to lowercase to match the answer format
   currentAnswer = copypasta.toLowerCase();
   console.log(currentAnswer)
 
   if (copypastaAnswer === currentAnswer) {
-
-    // for (let i = 0; i < 17; i++) {
-    //   console.log(`working`)
-    //   $(`#[i]`).addClass(`read`);
-    //   copypasta[i] = copypasta[i + 1]
-    // }
     switch (currentAnswer) {
     case copypasta1:
       $(`#1`).addClass(`read`);
-
       break;
+
     case copypasta2:
       $(`#2`).addClass(`read`);
-
       break;
+
     case copypasta3:
       $(`#3`).addClass(`read`);
-
       break;
 
     case copypasta4:
       $(`#4`).addClass(`read`);
-
       break;
+
     case copypasta5:
       $(`#5`).addClass(`read`);
-
       break;
+
     case copypasta6:
       $(`#6`).addClass(`read`);
-
       break;
+
     case copypasta7:
       $(`#7`).addClass(`read`);
-
       break;
+
     case copypasta9:
       $(`#8`).addClass(`read`);
-
       break;
+
     case copypasta10:
       $(`#10`).addClass(`read`);
-
       break;
+
     case copypasta11:
       $(`#11`).addClass(`read`);
-
       break;
+
     case copypasta12:
       $(`#12`).addClass(`read`);
-
       break;
+
     case copypasta13:
       $(`#13`).addClass(`read`);
-
       break;
+
     case copypasta14:
       $(`#14`).addClass(`read`);
-
       break;
+
     case copypasta15:
       $(`#15`).addClass(`read`);
-
       break;
+
     case copypasta16:
       $(`#16`).addClass(`read`);
-
       break;
+
     case copypasta17:
       $(`#17`).addClass(`read`);
-
       break;
 
     }
