@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+
+    <title>Code Taker</title>
+
+    <!-- CSS stylesheet(s) -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/swanky-purse/jquery-ui.css"/>
+    <!-- Library script(s) go here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body>
+    <!-- HTML would go here if needed. -->
+    <!--
+- every lettre dragble, have to click on it first
+-
+    -->
+    <!-- The poem, secret letters are in spans with class "secret" <span class="secret">(insert letter)</span> -->
+    <section id="poem">
+      <h2> What am I ?</h2>
+      <p>
+      <span class="secret">I</span> am a bird.
+      </p>
+      <p>
+       I <span class="secret">c</span>an <span class="secret">s</span>wim but I can’t fly.
+      </p>
+      <p>
+       I am black and whit<span class="secret">e</span>
+      </p>
+    </section>
+
+    <!-- The secret answer area-->
+    <section id="answer"></section>
+
+
+
+
+
+    <!-- possible answers -->
+    <!-- good one -->
+    <div id="solved-dialog" title="Good Job!">
+      <p>
+        You are guess the right word
+      </p>
+    </div>
+
+    <!-- My script(s) -->
+    <script src="js/script.js"></script>
+  </body>
+
+</html>
