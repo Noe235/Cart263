@@ -19,11 +19,18 @@
     <!-- HTML would go here if needed. -->
     <!--
 - every lettre dragble, have to click on it first
--
+-add button to confirm
+-add more riddles
+-add bad answers
+- change the css
+-instructions
+-remove letters
+
     -->
     <!-- The poem, secret letters are in spans with class "secret" <span class="secret">(insert letter)</span> -->
     <section id="poem">
       <h2> What am I ?</h2>
+      <div class="penguin">
       <p>
       <span class="secret">I</span> am a bird.
       </p>
@@ -33,22 +40,72 @@
       <p>
        I am black and whit<span class="secret">e</span>
       </p>
+    </div>
+
+        <div class="cat">
+        <p>
+      I have 4 legs and a tail.
+        </p>
+        <p>
+        I have whiskers.
+        </p>
+        <p>
+      People like to keep me as a pet.
+        </p>
+      </div>
+
+
+          <div class="elephant">
+          <p>
+        I have thick grey skin.
+          </p>
+          <p>
+        I have big ears and a long trunk.
+          </p>
+          <p>
+      I can spray water with my trunk.
+          </p>
+        </div>
+
+            <div class="owl">
+            <p>
+          I am a bird.
+            </p>
+            <p>
+        I make a ‘hoot’ sound.
+            </p>
+            <p>
+      I am usually awake at night.
+            </p>
+          </div>
+
+
+
     </section>
+
 
     <!-- The secret answer area-->
     <section id="answer"></section>
 
-
-
-
+    <div class="button-container">
+    <button class="enter"> Guess!
+    </button>
+</div>
 
     <!-- possible answers -->
     <!-- good one -->
-    <div id="solved-dialog" title="Good Job!">
+    <div id="solved-dialog-good" title="Good Job!">
       <p>
-        You are guess the right word
+        You have guess the right word
       </p>
     </div>
+
+
+    <!-- <div id="solved-dialog-bad" title="Wrong!">
+      <p>
+        Wrong guess try again
+      </p>
+    </div> -->
 
     <!-- My script(s) -->
     <script src="js/script.js"></script>

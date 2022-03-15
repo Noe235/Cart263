@@ -1,5 +1,5 @@
 #poem{
-  font-size: 1.2rem;
+  font-size: 3rem;
 }
 
 #answer {
@@ -10,4 +10,11 @@
 
 .found{
   color: red;
+}
+
+.button-container{
+padding-top: 10px;
+}
+p{
+  user-select: none;
 }
