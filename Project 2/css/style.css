@@ -1,0 +1,62 @@
+/*********************************************
+
+Here is a description of any special CSS used.
+By default that's nothing.
+
+**********************************************/
+
+@font-face {
+    font-family: 'leftoversregular';
+    src: url('leftovers-webfont.woff2') format('woff2'),
+         url('leftovers-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body{
+  font-family: 'leftoversregular';
+  user-select: none;
+  text-align: center;
+  width: 800px;
+  height: 800px;
+  margin: auto;
+  font-size: 3rem;
+
+
+
+
+
+
+  /* background-image: url("../assets/images/classroom.jpg");
+  background-position: top;
+  background-size: 150%,100%;
+  background-repeat: no-repeat; */
+
+}
+
+div{
+  padding: 10px;
+}
+
+h1{
+    letter-spacing: 3px;
+}
+
+h2{
+    letter-spacing: 5px;
+}
+
+.bg{
+    background-color: #929491;
+    width: 800px;
+    height: 800px;
+}
+/* .play{
+  font-size: 1.5rem;
+} */
+.game_ui{
+font-size: 1.5rem;
+color: #347DEB;
+
+}
