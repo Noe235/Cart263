@@ -52,9 +52,30 @@ h2{
     width: 800px;
     height: 800px;
 }
-/* .play{
-  font-size: 1.5rem;
-} */
+
+#X{
+  font-size: 20em;
+  position: absolute;
+  color: red;
+  font-family: sans-serif;
+  top: -9rem;
+  left: 11rem;
+display: none;
+}
+
+#lives_box{
+  display: none;
+  position: fixed;
+  right: 100px;
+  bottom: 100px;
+
+}
+
+#gameover{
+display: none;
+
+}
+
 .game_ui{
 font-size: 1.5rem;
 color: #347DEB;

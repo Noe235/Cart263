@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-    
+
     <title>The Dumbest Quiz Prototype</title>
 
     <!-- CSS stylesheet(s) -->
@@ -17,34 +17,61 @@
 
   <body>
     <!-- HTML would go here if needed. -->
+    <!-- wrong answer display -->
+    <div id="X">
+      X
+    </div>
+
+    <!-- menu screen -->
     <div class="bg">
-    <div class="Tittle">
-      <h1>The Dumbest Quiz</h1>
-    </div>
+      <div id="Menu">
+        <div class="Tittle">
+          <h1>The Dumbest Quiz</h1>
+        </div>
 
-    <div class="play">
-      <p> Play</p>
-    </div>
-
-
-    <div class="answer_space">
-
-
-    </div>
-
-    <div class="level1">
-      <h2> ①-Click the smallest.</h2>
-      <p class="wrong_answer"> small<p>
-      <p class="wrong_answer"> minuscule<p>
-      <p class="wrong_answer"> smaller<p>
-    </div>
+        <div class="play">
+          <p> Play</p>
+        </div>
+      </div>
+      <!-- gameover screen -->
+      <div id="gameover">
+        <h2> Game Over!</h2>
+      <span id="tryagain">  Try Again ?</span>
+      </div>
 
 
+      <!-- in game stuff -->
+      <div id="lives_box">
+      Lives: <span id="lives"> Undefined</span>
+      </div>
+      <!-- levels -->
+        <!-- level 1 -->
+          <div class="level1">
+            <h2> ①-Cl<span class="good_answer">i</span>ck the smallest.</h2>
+            <p class="wrong_answer"> small<p>
+            <p class="wrong_answer"> minuscule<p>
+            <p class="wrong_answer"> smaller<p>
+          </div>
 
+        <!-- level 2 -->
+        <div class="level2">
+          <h2>Click the <span class="good_answer">answer</span> </h2>
+          <p class="wrong_answer"> Anser<p>
+          <p class="wrong_answer"> Out of order<p>
+          <p class="wrong_answer"> Out of Order<p>
+        </div>
 
-    <!-- My script(s) -->
-    <script src="js/script.js"></script>
+        <!-- level 3 -->
+        <div class="level3">
+          <h2>How many steps does it take to put an elephant in the refigerator? </h2>
+          <p class="wrong_answer"> 5<p>
+          <p class="wrong_answer"> that's impossible<p>
+          <p class="good_answer"> 3<p>
+        </div>
 
-  </body>
+      <!-- My script(s) -->
+      <script src="js/script.js"></script>
+
+    </body>
   </div>
 </html>
