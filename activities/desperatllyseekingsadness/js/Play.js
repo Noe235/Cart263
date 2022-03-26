@@ -17,7 +17,7 @@ class Play extends Phaser.Scene {
   }
 
   /**
-  Does the lion's share of the work creating sprites and configuring them,
+  creating sprites and configuring them,
   as well as setting physics handlers and listening to the arrow keys.
   */
   create() {
@@ -27,9 +27,15 @@ class Play extends Phaser.Scene {
 
     // Create a sadness emoji in a random position
     this.sadness = this.physics.add.sprite(0, 0, `thumbs-down`);
-    // Note how we can use RandomRectangle() here if we put the object we want
-    // to reposition randomly in an array!
+
     Phaser.Actions.RandomRectangle([this.sadness], this.physics.world.bounds);
+
+    //create some unmovable walls
+    this.walls = this.physics.add.sprite(0, 0, `wall`);
+    this.walls.setImmovable(true);
+
+    Phaser.Actions.RandomRectangle([this.walls], this.physics.world.bounds);
+
 
     // Create a group of hapiness emojis with some basic
     // physics configuration
@@ -40,24 +46,26 @@ class Play extends Phaser.Scene {
       quantity: 120,
       // Collide with the "walls"
       collideWorldBounds: true,
-      // How much to they bounce when they hit something?
+      // How much to they bounce when they hit
       bounceX: 0.5,
       bounceY: 0.5,
-      // How quickly do they slow down while moving?
+      // How quickly do they slow down
       dragX: 50,
       dragY: 50
     });
     // Position all the members of the group randomly within a rectangle the same
-    // dimensions and position as the world's bounds (e.g. the canvas)
     Phaser.Actions.RandomRectangle(this.happiness.getChildren(), this.physics.world.bounds);
 
     // Listen for when the avatar overlaps the thumbs up and handle it,
-    // remembering to set "this" so that we can use "this" in the method it calls
+
     this.physics.add.overlap(this.avatar, this.sadness, this.getSad, null, this);
     // Add colliders between the avatar and the happiness, and the happiness and itself
-    // so that we get lots of fun bouncy physics for free!
-    this.physics.add.collider(this.avatar, this.happiness);
+
+    this.physics.add.collider(this.avatar, this.happiness, this.getKick, null, this);
     this.physics.add.collider(this.happiness, this.happiness);
+    this.physics.add.collider(this.avatar, this.walls);
+    this.physics.add.collider(this.happiness, this.walls);
+    this.physics.add.collider(this.sadness, this.walls);
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
@@ -70,9 +78,19 @@ class Play extends Phaser.Scene {
     // to reposition randomly in an array!
     Phaser.Actions.RandomRectangle([sadness], this.physics.world.bounds);
     var sound = this.sound.add('collect');
+
     sound.play();
   }
 
+  /// sound on collision avatar + happiness
+  getKick() {
+    var kicked = this.sound.add('collision');
+    if (kicked.isPlaying === true) {
+      kicked.stop();
+    } else {
+      kicked.play();
+    }
+  }
   /**
   Listens for user input
   */
