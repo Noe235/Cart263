@@ -69,6 +69,8 @@ class Play extends Phaser.Scene {
     // Note how we can use RandomRectangle() again here if we put the object we want
     // to reposition randomly in an array!
     Phaser.Actions.RandomRectangle([sadness], this.physics.world.bounds);
+    var sound = this.sound.add('collect');
+    sound.play();
   }
 
   /**
