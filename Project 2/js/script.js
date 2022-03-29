@@ -11,12 +11,16 @@ Noemie
 //variables
 let lives = 3;
 let current_level = 1;
+let level_5_answer = `ice`;
 
 $(`#lives`).text(lives);
 //levels to hide
 $(`.level1`).hide();
 $(`.level2`).hide();
 $(`.level3`).hide();
+$(`.level4`).hide();
+$(`.level5`).hide();
+$(`.level6`).hide();
 
 
 // menu
@@ -74,4 +78,46 @@ function ui() {
 // levels functions
 function level_1() {
   $(`.level1`).fadeIn(1000);
+}
+
+//level 5
+$(`.secret`).on(`click`, function (event) {
+  console.log(`draggin`);
+  $(`.secret`).draggable({
+    helper: "clone"
+  });
+});
+
+
+$(`#answerbox`).droppable({
+  drop: function (event, ui) {
+    let letter = ui.draggable.text();
+    $(this).append(letter);
+    ui.draggable.draggable(`disable`);
+    ui.draggable.addClass(`used`);
+
+
+  }
+});
+let btn = document.getElementById(`enter`);
+btn.addEventListener(`click`, checkAnswer)
+
+function checkAnswer() {
+  if ($(`#answerbox`).text() === level_5_answer) {
+    $(`.level${current_level}`).hide();
+    current_level++
+    $(`.level${current_level}`).show();
+  } else {
+    $(`#X`).show();
+    setTimeout(function () {
+      $(`#X`).hide();
+      lives--;
+      $(`#lives`).text(lives);
+      if (lives <= 0) {
+        $(`#gameover`).show();
+        $(`.level1`).hide();
+      }
+    }, 2000);
+  }
+
 }
