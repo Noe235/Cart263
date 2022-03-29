@@ -31,8 +31,30 @@ $(`.play`).on(`click`, function (event) {
 
 
 })
+// Title spanify
+let $title = $(`#title`);
+colorspanify($title);
 
 
+//schose random colors
+$(`.random-color`)
+  .each(function () {
+    $(this)
+      .css({
+        color: `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`
+      });
+  });
+
+//spanifying function applying colors
+function colorspanify($element) {
+  let text = $element.html();
+  let characters = text.split(``);
+  for (let i = 0; i < characters.length; i++) {
+    characters[i] = `<span class="random-color">${characters[i]}</span>`;
+  }
+  let html = characters.join(``);
+  $element.html(html);
+}
 
 // In game
 //wrong answer in game
@@ -71,7 +93,7 @@ $(`#tryagain`).on(`click`, function (event) {
 function ui() {
   $(`.Tittle`).fadeIn(2000);
   $(`.Tittle`).addClass(`game_ui`);
-  $
+
   // $(`.answer_space`).show();
 }
 
@@ -99,8 +121,11 @@ $(`#answerbox`).droppable({
 
   }
 });
+
+//button answering
 let btn = document.getElementById(`enter`);
 btn.addEventListener(`click`, checkAnswer)
+//button removing answer
 let buttonremove = document.getElementById(`remove`);
 buttonremove.addEventListener(`click`, removeAnswer);
 
@@ -129,7 +154,7 @@ function checkAnswer() {
   }
 }
 
+//deletes answer
 function removeAnswer() {
-  //deletes answer
   $(`#answerbox`).text(``);
 }

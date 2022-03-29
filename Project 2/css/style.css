@@ -65,9 +65,8 @@ display: none;
 
 #lives_box{
   display: none;
-  position: fixed;
-  right: 100px;
-  bottom: 100px;
+text-align: right;
+
 
 }
 
@@ -81,7 +80,11 @@ display: none;
   border: 1px dashed black;
   text-align: center;
   justify-content: center;
-  
+
+}
+#answer-wrapper {
+  display: flex;
+  justify-content: center;
 }
 .used{
   color: red;
