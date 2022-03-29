@@ -88,7 +88,7 @@ $(`.secret`).on(`click`, function (event) {
   });
 });
 
-
+//drag letter to the box
 $(`#answerbox`).droppable({
   drop: function (event, ui) {
     let letter = ui.draggable.text();
@@ -101,13 +101,21 @@ $(`#answerbox`).droppable({
 });
 let btn = document.getElementById(`enter`);
 btn.addEventListener(`click`, checkAnswer)
+let buttonremove = document.getElementById(`remove`);
+buttonremove.addEventListener(`click`, removeAnswer);
 
 function checkAnswer() {
-  if ($(`#answerbox`).text() === level_5_answer) {
+  //good answer proceed
+  let answer = $(`#answerbox`).text();
+  answer = answer.toLowerCase();
+  if (answer === level_5_answer) {
     $(`.level${current_level}`).hide();
     current_level++
     $(`.level${current_level}`).show();
   } else {
+    removeAnswer();
+
+    //call the bad answer visual
     $(`#X`).show();
     setTimeout(function () {
       $(`#X`).hide();
@@ -119,5 +127,9 @@ function checkAnswer() {
       }
     }, 2000);
   }
+}
 
+function removeAnswer() {
+  //deletes answer
+  $(`#answerbox`).text(``);
 }
