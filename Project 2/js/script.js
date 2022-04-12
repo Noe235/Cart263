@@ -120,7 +120,7 @@ function ui() {
   $(`.Tittle`).fadeIn(2000);
   $(`.Tittle`).addClass(`game_ui`);
 
-  // $(`.answer_space`).show();
+
 }
 
 // levels functions
@@ -135,7 +135,26 @@ function level_4() {
       containment: `#year-container`
     });
   });
+  let characters = [];
+  for (let i = 0; i < 15; i++) {
+
+    characters[i] = randomIntFromInterval(364, 366);
+
+    let charactersSpan = `<span class="move">${characters[i]}</span>`;
+    $(`#year-container`).append(charactersSpan);
+  }
 }
+
+function randomIntFromInterval(min, max) { // min and max included
+  return (Math.random() * (max - min + 1) + min).toFixed(2);
+}
+
+
+
+
+
+
+
 
 //level 5
 $(`.secret`).on(`click`, function (event) {
@@ -146,9 +165,30 @@ $(`.secret`).on(`click`, function (event) {
 
 
 // level 7
+$(`#elephant`).draggable({
+  containment: `#animal-container`
+});
+$(`#giraffe`).draggable({
+  containment: `#animal-container`
+});
 
-$(`#elephant`).draggable();
-$(`#giraffe`).draggable();
+$(`#elephant`).hide();
+$(`#fridge`).on(`click`, function (event) {
+  $(`#namefridge`).addClass(`open`);
+  $(`#elephant`).show();
+
+});
+
+$(`#fridge`).droppable({
+  drop: function (event, ui) {
+    $(`#giraffe`).append(`#giraffe`);
+    $(`#giraffe`).remove();
+  }
+})
+
+
+
+
 
 //drag letter to the box
 $(`#answerbox`).droppable({
@@ -213,18 +253,17 @@ $(`#answerbox4`).droppable({
 });
 
 
-let btn4 = document.getElementById(`enter4`);
-btn.addEventListener(`click`, checkAnswerLevel4)
+let btnfour = document.getElementById(`enterfour`);
+btnfour.addEventListener(`click`, checkAnswerLevelfour)
 //button removing answer
-let buttonremove4 = document.getElementById(`remove4`);
-buttonremove.addEventListener(`click`, removeAnswerLevel4);
+let buttonremovefour = document.getElementById(`removefour`);
+buttonremovefour.addEventListener(`click`, removeAnswerLevelfour);
 
-function checkAnswerLevel4() {
+function checkAnswerLevelfour() {
   //good answer proceed
   let answer = $(`#answerbox4`).text();
   answer = answer.toLowerCase();
   if (currentLevel === 4) {
-    console.log(`${answer}, ${level4Answer}`);
     if (answer === level4Answer) {
       $(`.level${currentLevel}`).hide();
       currentLevel++;
@@ -253,7 +292,7 @@ function checkAnswerLevel4() {
   }
 }
 //deletes answer
-function removeAnswerLevel4() {
+function removeAnswerLevelfour() {
   $(`#answerbox4`).text(``);
 }
 

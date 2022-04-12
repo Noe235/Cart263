@@ -97,17 +97,20 @@ display: none;
 .used{
   color: red;
 }
+
 .move{
 padding: 0px;;
 justify-content: center;
   display: flex;
-  margin: 0px;
+  margin: 10px 40px;
   width: 50px;
 
 
 }
 #year-container{
   height: 300px;
+display: flex;
+flex-flow: wrap;
 
 
 }
@@ -124,12 +127,17 @@ color: #347DEB;
 #fridge{
   width: 30vw;
   height: 30vw;
+  border: 5px dashed black;
 
-  border: 5px black;
   display: grid;
   justify-content: center;
   align-content: center;
 
+
+}
+
+#animal-container{
+align-items: center;
 }
 
 #elephant{
