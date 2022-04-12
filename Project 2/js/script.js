@@ -10,8 +10,9 @@ Noemie
 
 //variables
 let lives = 3;
-let current_level = 1;
-let level_5_answer = `ice`;
+let currentLevel = 1;
+let level4Answer = `365.24`;
+let level5Answer = `river`;
 
 $(`#lives`).text(lives);
 //levels to hide
@@ -21,6 +22,7 @@ $(`.level3`).hide();
 $(`.level4`).hide();
 $(`.level5`).hide();
 $(`.level6`).hide();
+$(`.level7`).hide();
 
 
 // menu
@@ -35,6 +37,11 @@ $(`.play`).on(`click`, function (event) {
 let $title = $(`#title`);
 colorspanify($title);
 
+let $drag = $(`.drag`);
+dragspanify($drag);
+
+
+
 
 //schose random colors
 $(`.random-color`)
@@ -44,6 +51,8 @@ $(`.random-color`)
         color: `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`
       });
   });
+
+
 
 //spanifying function applying colors
 function colorspanify($element) {
@@ -55,6 +64,18 @@ function colorspanify($element) {
   let html = characters.join(``);
   $element.html(html);
 }
+
+//spanifying function applying colors
+function dragspanify($element) {
+  let text = $element.html();
+  let characters = text.split(``);
+  for (let i = 0; i < characters.length; i++) {
+    characters[i] = `<span class="secret">${characters[i]}</span>`;
+  }
+  let html = characters.join(``);
+  $element.html(html);
+}
+
 
 // In game
 //wrong answer in game
@@ -74,11 +95,16 @@ $(`.wrong_answer`).on(`click`, function (event) {
 
 //good answer in game
 $(`.good_answer`).on(`click`, function (event) {
-  $(`.level${current_level}`).hide();
-  current_level++
-  $(`.level${current_level}`).show();
-})
-
+  $(`.level${currentLevel}`).hide();
+  currentLevel++;
+  $(`.level${currentLevel}`).show();
+  if (currentLevel === 4) {
+    level_4();
+  }
+  if (currentLevel === 5) {
+    level_5();
+  }
+});
 // gameover
 //try again
 $(`#tryagain`).on(`click`, function (event) {
@@ -102,13 +128,27 @@ function level_1() {
   $(`.level1`).fadeIn(1000);
 }
 
+//level 4
+function level_4() {
+  $(`.move`).on(`click`, function (event) {
+    $(`.move`).draggable({
+      containement: `#year-container`
+    });
+  });
+}
+
 //level 5
 $(`.secret`).on(`click`, function (event) {
-  console.log(`draggin`);
   $(`.secret`).draggable({
     helper: "clone"
   });
 });
+
+
+// level 7
+
+$(`#elephant`).draggable();
+$(`#giraffe`).draggable();
 
 //drag letter to the box
 $(`#answerbox`).droppable({
@@ -133,10 +173,19 @@ function checkAnswer() {
   //good answer proceed
   let answer = $(`#answerbox`).text();
   answer = answer.toLowerCase();
-  if (answer === level_5_answer) {
-    $(`.level${current_level}`).hide();
-    current_level++
-    $(`.level${current_level}`).show();
+  if (currentLevel === 4) {
+    console.log(`${answer}, ${level4Answer}`);
+    if (answer === level4Answer) {
+      $(`.level${currentLevel}`).hide();
+      currentLevel++;
+      $(`.level${currentLevel}`).show();
+    }
+  } else if (currentLevel === 5) {
+    if (answer === level5Answer) {
+      $(`.level${currentLevel}`).hide();
+      currentLevel++;
+      $(`.level${currentLevel}`).show();
+    }
   } else {
     removeAnswer();
 

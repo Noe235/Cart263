@@ -89,7 +89,20 @@ display: none;
 .used{
   color: red;
 }
+.move{
+padding: 0px;;
+justify-content: center;
+  display: flex;
+  margin: 0px;
+  width: 50px;
 
+
+}
+#year-container{
+  height: 37rem;
+
+
+}
 .button-container{
 padding-top: 10px;
 }
@@ -97,5 +110,20 @@ padding-top: 10px;
 .game_ui{
 font-size: 1.5rem;
 color: #347DEB;
+
+}
+
+#fridge{
+  width: 30vw;
+  height: 30vw;
+
+  border: 5px black;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+
+}
+
+#elephant{
 
 }
