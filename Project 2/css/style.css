@@ -82,6 +82,14 @@ display: none;
   justify-content: center;
 
 }
+#answerbox4{
+  width: 10rem;
+  height: 3rem;
+  border: 1px dashed black;
+  text-align: center;
+  justify-content: center;
+
+}
 #answer-wrapper {
   display: flex;
   justify-content: center;
@@ -99,7 +107,7 @@ justify-content: center;
 
 }
 #year-container{
-  height: 37rem;
+  height: 300px;
 
 
 }

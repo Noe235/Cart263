@@ -132,7 +132,7 @@ function level_1() {
 function level_4() {
   $(`.move`).on(`click`, function (event) {
     $(`.move`).draggable({
-      containement: `#year-container`
+      containment: `#year-container`
     });
   });
 }
@@ -173,14 +173,7 @@ function checkAnswer() {
   //good answer proceed
   let answer = $(`#answerbox`).text();
   answer = answer.toLowerCase();
-  if (currentLevel === 4) {
-    console.log(`${answer}, ${level4Answer}`);
-    if (answer === level4Answer) {
-      $(`.level${currentLevel}`).hide();
-      currentLevel++;
-      $(`.level${currentLevel}`).show();
-    }
-  } else if (currentLevel === 5) {
+  if (currentLevel === 5) {
     if (answer === level5Answer) {
       $(`.level${currentLevel}`).hide();
       currentLevel++;
@@ -198,9 +191,70 @@ function checkAnswer() {
       if (lives <= 0) {
         $(`#gameover`).show();
         $(`.level1`).hide();
+        $(`.level2`).hide();
+        $(`.level3`).hide();
+        $(`.level4`).hide();
+        $(`.level5`).hide();
+        $(`.level6`).hide();
+        $(`.level7`).hide();
       }
     }, 2000);
   }
+}
+
+
+$(`#answerbox4`).droppable({
+  drop: function (event, ui) {
+    let letter = ui.draggable.text();
+    $(this).append(letter);
+    ui.draggable.draggable(`disable`);
+
+  }
+});
+
+
+let btn4 = document.getElementById(`enter4`);
+btn.addEventListener(`click`, checkAnswerLevel4)
+//button removing answer
+let buttonremove4 = document.getElementById(`remove4`);
+buttonremove.addEventListener(`click`, removeAnswerLevel4);
+
+function checkAnswerLevel4() {
+  //good answer proceed
+  let answer = $(`#answerbox4`).text();
+  answer = answer.toLowerCase();
+  if (currentLevel === 4) {
+    console.log(`${answer}, ${level4Answer}`);
+    if (answer === level4Answer) {
+      $(`.level${currentLevel}`).hide();
+      currentLevel++;
+      $(`.level${currentLevel}`).show();
+    }
+  } else {
+    removeAnswer();
+
+    //call the bad answer visual
+    $(`#X`).show();
+    setTimeout(function () {
+      $(`#X`).hide();
+      lives--;
+      $(`#lives`).text(lives);
+      if (lives <= 0) {
+        $(`#gameover`).show();
+        $(`.level1`).hide();
+        $(`.level2`).hide();
+        $(`.level3`).hide();
+        $(`.level4`).hide();
+        $(`.level5`).hide();
+        $(`.level6`).hide();
+        $(`.level7`).hide();
+      }
+    }, 2000);
+  }
+}
+//deletes answer
+function removeAnswerLevel4() {
+  $(`#answerbox4`).text(``);
 }
 
 //deletes answer
