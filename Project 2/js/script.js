@@ -15,6 +15,7 @@ let currentLevel = 1;
 let level4Answer = `365.24`;
 let level5Answer = `river`;
 let level7Answer = `giraffe`;
+let level8Answer = `w`;
 
 
 $(`#lives`).text(lives);
@@ -26,6 +27,10 @@ $(`.level4`).hide();
 $(`.level5`).hide();
 $(`.level6`).hide();
 $(`.level7`).hide();
+$(`.level8`).hide();
+$(`.level9`).hide();
+$(`.level10`).hide();
+$(`.winingScreen`).hide();
 $(`#answer-level7`).hide();
 
 
@@ -41,8 +46,11 @@ $(`.play`).on(`click`, function (event) {
 let $title = $(`#title`);
 colorspanify($title);
 
-let $drag = $(`.drag`);
-dragspanify($drag);
+let $drag5 = $(`.drag5`);
+dragspanify5($drag5);
+
+let $drag8 = $(`.drag8`);
+dragspanify8($drag8);
 
 
 
@@ -69,8 +77,8 @@ function colorspanify($element) {
   $element.html(html);
 }
 
-//spanifying function applying colors
-function dragspanify($element) {
+//spanifying draging level 5
+function dragspanify5($element) {
   let text = $element.html();
   let characters = text.split(``);
   for (let i = 0; i < characters.length; i++) {
@@ -80,6 +88,15 @@ function dragspanify($element) {
   $element.html(html);
 }
 
+function dragspanify8($element) {
+  let text = $element.html();
+  let characters = text.split(``);
+  for (let i = 0; i < characters.length; i++) {
+    characters[i] = `<span class="secret">${characters[i]}</span>`;
+  }
+  let html = characters.join(``);
+  $element.html(html);
+}
 
 // In game
 //wrong answer in game
@@ -128,6 +145,7 @@ function ui() {
 }
 
 // levels functions
+//level 1 animation
 function level_1() {
   $(`.level1`).fadeIn(1000);
 }
@@ -141,22 +159,22 @@ function level_4() {
 
   });
 
+  //add random numbers
   let characters = [];
   for (let i = 0; i < 15; i++) {
-
     characters[i] = randomIntFromInterval(364, 366);
-
     let charactersSpan = `<span class="move">${characters[i]}</span>`;
     $(`#year-container`).append(charactersSpan);
   }
 }
-
-function randomIntFromInterval(min, max) { // min and max included
+//random number btewtten 364-366
+function randomIntFromInterval(min, max) {
   return (Math.random() * (max - min + 1) + min).toFixed(2);
 }
 
 
 //level 5
+//allowe to move and clone the movable numbers
 $(`.secret`).on(`click`, function (event) {
   $(`.secret`).draggable({
     helper: "clone"
@@ -165,23 +183,32 @@ $(`.secret`).on(`click`, function (event) {
 
 
 // level 7
-
-
+//L7 prep of the level
 $(`#elephant`).draggable({
   containment: `#animal-container`
 });
 $(`#giraffe`).draggable({
   containment: `#animal-container`
 });
-
 $(`#elephant`).hide();
 
+//L7 clicks
 $(`#fridge`).one(`click`, function (event) {
   $(`#namefridge`).addClass(`open`);
   $(`#elephant`).show();
 
 });
 
+$(`#fridge`).on(`click`, function (event) {
+  $(`#giraffe-fridge`).hide();
+  let answer = $(`#giraffe-fridge`).text();
+  answer = answer.toLowerCase();
+  if (answer === level7Answer) {
+    $(`#answer-level7`).show();
+  }
+});
+
+//L7 droppable items and function
 $(`#fridge`).droppable({
   drop: function (event, ui) {
     $(`#fridge`).append(`<span id= "giraffe-fridge">giraffe</span>`);
@@ -203,18 +230,112 @@ function disabledrop() {
   });
 }
 
-$(`#fridge`).on(`click`, function (event) {
-  $(`#giraffe-fridge`).hide();
-  let answer = $(`#giraffe-fridge`).text();
+
+
+
+
+
+//Levle 4 answerbox functions
+//L4 checking button
+let btnfour = document.getElementById(`enterfour`);
+btnfour.addEventListener(`click`, checkAnswerLevelfour)
+let buttonremovefour = document.getElementById(`removefour`);
+buttonremovefour.addEventListener(`click`, removeAnswerLevelfour);
+
+function checkAnswerLevelfour() {
+  //good 4 answer proceed
+  let answer = $(`#answerbox4`).text();
   answer = answer.toLowerCase();
-  if (answer === level7Answer) {
-    $(`#answer-level7`).show();
+  if (currentLevel === 4) {
+    if (answer === level4Answer) {
+      $(`.level${currentLevel}`).hide();
+      currentLevel++;
+      $(`.level${currentLevel}`).show();
+    }
+  } else {
+    removeAnswerLevelfour();
+
+    //call the bad answer visual
+    $(`#X`).show();
+    setTimeout(function () {
+      $(`#X`).hide();
+      lives--;
+      $(`#lives`).text(lives);
+      if (lives <= 0) {
+        $(`#gameover`).show();
+        $(`.level1`).hide();
+        $(`.level2`).hide();
+        $(`.level3`).hide();
+        $(`.level4`).hide();
+        $(`.level5`).hide();
+        $(`.level6`).hide();
+        $(`.level7`).hide();
+        $(`.level8`).hide();
+        $(`.level9`).hide();
+        $(`.level10`).hide();
+        $(`.winingScreen`).hide();
+      }
+    }, 2000);
+  }
+}
+
+//Level 4 answerbox specification
+$(`#answerbox4`).droppable({
+  drop: function (event, ui) {
+    let letter = ui.draggable.text();
+    $(this).append(letter);
+    ui.draggable.draggable(`disable`);
+    ui.draggable.remove();
+
   }
 });
 
+//Levle 5 answerbox and functions
+//button 5 answering
+let btnfive = document.getElementById(`enterfive`);
+btnfive.addEventListener(`click`, checkAnswerLevelFive)
+let buttonremovefive = document.getElementById(`removefive`);
+buttonremovefive.addEventListener(`click`, removeAnswerLevelFive);
 
-//drag letter to the box
-$(`#answerbox`).droppable({
+function checkAnswerLevelFive() {
+  //good answer 5 proceed
+  let answer = $(`#answerbox5`).text();
+  answer = answer.toLowerCase();
+  if (currentLevel === 5) {
+    if (answer === level5Answer) {
+      $(`.level${currentLevel}`).hide();
+      currentLevel++;
+      $(`.level${currentLevel}`).show();
+    }
+  } else {
+    removeAnswerLevelFive();
+
+    //call the bad answer visual
+    $(`#X`).show();
+    setTimeout(function () {
+      $(`#X`).hide();
+      lives--;
+      $(`#lives`).text(lives);
+      if (lives <= 0) {
+        $(`#gameover`).show();
+        $(`.level1`).hide();
+        $(`.level2`).hide();
+        $(`.level3`).hide();
+        $(`.level4`).hide();
+        $(`.level5`).hide();
+        $(`.level6`).hide();
+        $(`.level7`).hide();
+        $(`.level8`).hide();
+        $(`.level9`).hide();
+        $(`.level10`).hide();
+        $(`.winingScreen`).hide();
+      }
+    }, 2000);
+  }
+}
+
+//L5 answerbox specifications
+$(`#answerbox5`).droppable({
   drop: function (event, ui) {
     let letter = ui.draggable.text();
     $(this).append(letter);
@@ -226,25 +347,26 @@ $(`#answerbox`).droppable({
   }
 });
 
-//button answering
-let btn = document.getElementById(`enter`);
-btn.addEventListener(`click`, checkAnswer)
-//button removing answer
-let buttonremove = document.getElementById(`remove`);
-buttonremove.addEventListener(`click`, removeAnswer);
+// level 8 answerbox checks
+//button 8 answering
+let btneight = document.getElementById(`entereight`);
+btneight.addEventListener(`click`, checkAnswerLevelEight)
+let buttonremoveeight = document.getElementById(`removeeight`);
+buttonremoveeight.addEventListener(`click`, removeAnswerLevelEight);
 
-function checkAnswer() {
-  //good answer proceed
-  let answer = $(`#answerbox`).text();
+//check 8 answer
+function checkAnswerLevelEight() {
+  //good answer 8 proceed
+  let answer = $(`#answerbox8`).text();
   answer = answer.toLowerCase();
-  if (currentLevel === 5) {
-    if (answer === level5Answer) {
+  if (currentLevel === 8) {
+    if (answer === level8Answer) {
       $(`.level${currentLevel}`).hide();
       currentLevel++;
       $(`.level${currentLevel}`).show();
     }
   } else {
-    removeAnswer();
+    removeAnswerLevelEight();
 
     //call the bad answer visual
     $(`#X`).show();
@@ -261,67 +383,37 @@ function checkAnswer() {
         $(`.level5`).hide();
         $(`.level6`).hide();
         $(`.level7`).hide();
+        $(`.level8`).hide();
+        $(`.level9`).hide();
+        $(`.level10`).hide();
+        $(`.winingScreen`).hide();
       }
     }, 2000);
   }
-}
+};
 
-
-$(`#answerbox4`).droppable({
+//L8 answerbox specifications
+$(`#answerbox8`).droppable({
   drop: function (event, ui) {
     let letter = ui.draggable.text();
     $(this).append(letter);
     ui.draggable.draggable(`disable`);
-    ui.draggable.remove();
+    ui.draggable.addClass(`used`);
+
+
 
   }
 });
 
-
-let btnfour = document.getElementById(`enterfour`);
-btnfour.addEventListener(`click`, checkAnswerLevelfour)
-//button removing answer
-let buttonremovefour = document.getElementById(`removefour`);
-buttonremovefour.addEventListener(`click`, removeAnswerLevelfour);
-
-function checkAnswerLevelfour() {
-  //good answer proceed
-  let answer = $(`#answerbox4`).text();
-  answer = answer.toLowerCase();
-  if (currentLevel === 4) {
-    if (answer === level4Answer) {
-      $(`.level${currentLevel}`).hide();
-      currentLevel++;
-      $(`.level${currentLevel}`).show();
-    }
-  } else {
-    removeAnswer();
-
-    //call the bad answer visual
-    $(`#X`).show();
-    setTimeout(function () {
-      $(`#X`).hide();
-      lives--;
-      $(`#lives`).text(lives);
-      if (lives <= 0) {
-        $(`#gameover`).show();
-        $(`.level1`).hide();
-        $(`.level2`).hide();
-        $(`.level3`).hide();
-        $(`.level4`).hide();
-        $(`.level5`).hide();
-        $(`.level6`).hide();
-        $(`.level7`).hide();
-      }
-    }, 2000);
-  }
-}
-//deletes answer
+//deletes answer for box
 function removeAnswerLevelfour() {
   $(`#answerbox4`).text(``);
-}
+};
 
-//deletes answer
-function removeAnswer() {
-  $(`#answerbox`).text(``);
-}
+function removeAnswerLevelFive() {
+  $(`#answerbox5`).text(``);
+};
+
+function removeAnswerLevelEight() {
+  $(`#answerbox8`).text(``);
+};
