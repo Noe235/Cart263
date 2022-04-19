@@ -30,7 +30,7 @@ $(`.level7`).hide();
 $(`.level8`).hide();
 $(`.level9`).hide();
 $(`.level10`).hide();
-$(`.winingScreen`).hide();
+$(`#winingScreen`).hide();
 $(`#answer-level7`).hide();
 
 
@@ -42,13 +42,17 @@ $(`.play`).on(`click`, function (event) {
 
 
 })
-// Title spanify
+
+// Title spanify colors
 let $title = $(`#title`);
 colorspanify($title);
-
+// endcreen colors
+let $endscreen = $(`#endscreen`);
+colorspanify($endscreen);
+// spanify the level 5 letters
 let $drag5 = $(`.drag5`);
 dragspanify5($drag5);
-
+// spanify levle 8 letters
 let $drag8 = $(`.drag8`);
 dragspanify8($drag8);
 
@@ -122,10 +126,22 @@ $(`.good_answer`).on(`click`, function (event) {
   if (currentLevel === 4) {
     level_4();
   }
-  if (currentLevel === 5) {
-    level_5();
-  }
 });
+
+// final answer
+$(`.final_answer`).on(`click`, function (event) {
+  $(`.level${currentLevel}`).hide();
+  $(`#winingScreen`).show();
+});
+// returning to menu
+$(`#returnmenu`).on(`click`, function (event) {
+  $(`#winingScreen`).hide();
+  $(`#Menu`).show();
+  $(`#lives_box`).hide();
+  lives = 3;
+  $(`#lives`).text(lives);
+});
+
 // gameover
 //try again
 $(`#tryagain`).on(`click`, function (event) {
@@ -134,7 +150,9 @@ $(`#tryagain`).on(`click`, function (event) {
   $(`#lives_box`).hide();
   lives = 3;
   $(`#lives`).text(lives);
-})
+});
+
+
 
 // other funcions
 function ui() {
@@ -147,7 +165,7 @@ function ui() {
 // levels functions
 //level 1 animation
 function level_1() {
-  $(`.level1`).fadeIn(1000);
+  $(`.level1`).fadeIn(500);
 }
 
 //level 4
@@ -273,7 +291,7 @@ function checkAnswerLevelfour() {
         $(`.level8`).hide();
         $(`.level9`).hide();
         $(`.level10`).hide();
-        $(`.winingScreen`).hide();
+        $(`#winingScreen`).hide();
       }
     }, 2000);
   }
@@ -328,7 +346,7 @@ function checkAnswerLevelFive() {
         $(`.level8`).hide();
         $(`.level9`).hide();
         $(`.level10`).hide();
-        $(`.winingScreen`).hide();
+        $(`#winingScreen`).hide();
       }
     }, 2000);
   }
@@ -386,7 +404,7 @@ function checkAnswerLevelEight() {
         $(`.level8`).hide();
         $(`.level9`).hide();
         $(`.level10`).hide();
-        $(`.winingScreen`).hide();
+        $(`#winingScreen`).hide();
       }
     }, 2000);
   }
