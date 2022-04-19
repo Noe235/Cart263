@@ -9,10 +9,13 @@ Noemie
 // Code goes here
 
 //variables
+
 let lives = 3;
 let currentLevel = 1;
 let level4Answer = `365.24`;
 let level5Answer = `river`;
+let level7Answer = `giraffe`;
+
 
 $(`#lives`).text(lives);
 //levels to hide
@@ -23,6 +26,7 @@ $(`.level4`).hide();
 $(`.level5`).hide();
 $(`.level6`).hide();
 $(`.level7`).hide();
+$(`#answer-level7`).hide();
 
 
 // menu
@@ -134,7 +138,9 @@ function level_4() {
     $(`.move`).draggable({
       containment: `#year-container`
     });
+
   });
+
   let characters = [];
   for (let i = 0; i < 15; i++) {
 
@@ -150,12 +156,6 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 
-
-
-
-
-
-
 //level 5
 $(`.secret`).on(`click`, function (event) {
   $(`.secret`).draggable({
@@ -165,6 +165,8 @@ $(`.secret`).on(`click`, function (event) {
 
 
 // level 7
+
+
 $(`#elephant`).draggable({
   containment: `#animal-container`
 });
@@ -173,7 +175,8 @@ $(`#giraffe`).draggable({
 });
 
 $(`#elephant`).hide();
-$(`#fridge`).on(`click`, function (event) {
+
+$(`#fridge`).one(`click`, function (event) {
   $(`#namefridge`).addClass(`open`);
   $(`#elephant`).show();
 
@@ -181,13 +184,33 @@ $(`#fridge`).on(`click`, function (event) {
 
 $(`#fridge`).droppable({
   drop: function (event, ui) {
-    $(`#giraffe`).append(`#giraffe`);
-    $(`#giraffe`).remove();
+    $(`#fridge`).append(`<span id= "giraffe-fridge">giraffe</span>`);
+    $(ui.draggable).remove();
   }
-})
+});
 
+$(`#animal-container`).droppable({
+  drop: function (event, ui) {
+    $(`#animal-container`).append(`Elephant`);
+    $(ui.draggable).remove();
+    disabledrop();
+  }
+});
 
+function disabledrop() {
+  $(`#animal-container`).droppable({
+    disabled: true
+  });
+}
 
+$(`#fridge`).on(`click`, function (event) {
+  $(`#giraffe-fridge`).hide();
+  let answer = $(`#giraffe-fridge`).text();
+  answer = answer.toLowerCase();
+  if (answer === level7Answer) {
+    $(`#answer-level7`).show();
+  }
+});
 
 
 //drag letter to the box
@@ -197,6 +220,7 @@ $(`#answerbox`).droppable({
     $(this).append(letter);
     ui.draggable.draggable(`disable`);
     ui.draggable.addClass(`used`);
+
 
 
   }
@@ -248,6 +272,7 @@ $(`#answerbox4`).droppable({
     let letter = ui.draggable.text();
     $(this).append(letter);
     ui.draggable.draggable(`disable`);
+    ui.draggable.remove();
 
   }
 });
